@@ -114,7 +114,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener
     private void update()
     {
         mController.update();
-        Keys.update();
+        Keys.copy();
         mController.draw( g );
         Graphics g2 = getGraphics();
         g2.drawImage( image, 0, 0, Constants.WIDTH, Constants.HEIGHT2, null );

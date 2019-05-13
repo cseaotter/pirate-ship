@@ -28,18 +28,18 @@ public class Keys {
 	public static int ESCAPE = 6;
 	public static int F1 = 7;
 	
-	public static void keySet(int i, boolean b) {
-		if(i == KeyEvent.VK_UP) keyState[UP] = b;
-		else if(i == KeyEvent.VK_LEFT) keyState[LEFT] = b;
-		else if(i == KeyEvent.VK_DOWN) keyState[DOWN] = b;
-		else if(i == KeyEvent.VK_RIGHT) keyState[RIGHT] = b;
-		else if(i == KeyEvent.VK_SPACE) keyState[SPACE] = b;
-		else if(i == KeyEvent.VK_ENTER) keyState[ENTER] = b;
-		else if(i == KeyEvent.VK_ESCAPE) keyState[ESCAPE] = b;
-		else if(i == KeyEvent.VK_F1) keyState[F1] = b;
+	public static void keySet(int i, boolean pressed) {
+		if(i == KeyEvent.VK_UP) keyState[UP] = pressed;
+		else if(i == KeyEvent.VK_LEFT) keyState[LEFT] = pressed;
+		else if(i == KeyEvent.VK_DOWN) keyState[DOWN] = pressed;
+		else if(i == KeyEvent.VK_RIGHT) keyState[RIGHT] = pressed;
+		else if(i == KeyEvent.VK_SPACE) keyState[SPACE] = pressed;
+		else if(i == KeyEvent.VK_ENTER) keyState[ENTER] = pressed;
+		else if(i == KeyEvent.VK_ESCAPE) keyState[ESCAPE] = pressed;
+		else if(i == KeyEvent.VK_F1) keyState[F1] = pressed;
 	}
 	
-	public static void update() {
+	public static void copy() {
 		for(int i = 0; i < NUM_KEYS; i++) {
 			prevKeyState[i] = keyState[i];
 		}
