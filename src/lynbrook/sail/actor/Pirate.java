@@ -2,6 +2,7 @@ package lynbrook.sail.actor;
 
 import lynbrook.sail.gui.IslandMap;
 
+
 public class Pirate extends Player
 {
 

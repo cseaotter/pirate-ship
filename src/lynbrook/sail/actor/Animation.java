@@ -1,112 +1,66 @@
-// This class takes in an array of images.
-// Calling getImage() gives you the appropriate
-// image in the animation cycle.
-
 package lynbrook.sail.actor;
 
 import java.awt.image.BufferedImage;
+
+import lynbrook.sail.data.Constants;
 
 
 public class Animation
 {
 
-    private BufferedImage[] frames;
+    private BufferedImage[] mFrames;
 
-    private int currentFrame;
+    private int mCurrentFrame;
 
-    private int numFrames;
+    private int mDelayCount;
 
-    private int count;
-
-    private int delay;
-
-    private int timesPlayed;
+    private int mDelaySum;
 
 
     public Animation()
     {
-        timesPlayed = 0;
+        mDelaySum = Constants.DEFAULT_ANIMATION_DELAY_FRAMES;
+        mCurrentFrame = 0;
+        mDelayCount = 0;
     }
 
 
     public void setFrames( BufferedImage[] frames )
     {
-        this.frames = frames;
-        currentFrame = 0;
-        count = 0;
-        timesPlayed = 0;
-        delay = 2;
-        numFrames = frames.length;
+        mFrames = frames;
     }
 
 
-    public void setDelay( int i )
+    public void setDelay( int delaySum )
     {
-        delay = i;
-    }
-
-
-    public void setFrame( int i )
-    {
-        currentFrame = i;
-    }
-
-
-    public void setNumFrames( int i )
-    {
-        numFrames = i;
+        mDelaySum = delaySum;
     }
 
 
     public void update()
     {
 
-        if ( delay == -1 )
+        if ( mDelaySum < 0 )
+        {
             return;
-
-        count++;
-
-        if ( count == delay )
-        {
-            currentFrame++;
-            count = 0;
-        }
-        if ( currentFrame == numFrames )
-        {
-            currentFrame = 0;
-            timesPlayed++;
         }
 
-    }
+        mDelayCount++;
 
+        mDelayCount %= mDelaySum;
+        if ( mDelayCount == 0 )
+        {
+            mCurrentFrame++;
+        }
 
-    public int getFrame()
-    {
-        return currentFrame;
-    }
+        mCurrentFrame %= mFrames.length;
 
-
-    public int getCount()
-    {
-        return count;
     }
 
 
     public BufferedImage getImage()
     {
-        return frames[currentFrame];
-    }
-
-
-    public boolean hasPlayedOnce()
-    {
-        return timesPlayed > 0;
-    }
-
-
-    public boolean hasPlayed( int i )
-    {
-        return timesPlayed == i;
+        return mFrames[mCurrentFrame];
     }
 
 }

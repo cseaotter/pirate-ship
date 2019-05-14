@@ -1,14 +1,20 @@
 package lynbrook.sail.senario;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import lynbrook.sail.actor.Item;
 import lynbrook.sail.actor.Player;
 import lynbrook.sail.controller.GameController;
-import lynbrook.sail.controller.Keys;
 import lynbrook.sail.data.Constants;
+import lynbrook.sail.data.PathOfMoving;
 import lynbrook.sail.gui.IslandMap;
+import lynbrook.sail.gui.MapImage;
 
 
 public class IslandScenario extends Scenario
@@ -19,94 +25,160 @@ public class IslandScenario extends Scenario
         super( controller );
     }
 
-    private Player player;
+    private Player mPlayer;
 
-    private IslandMap tileMap;
+    private IslandMap mMap;
 
-    // items
-    private ArrayList<Item> items;
+    private ArrayList<Item> mItems;
 
-    private int xsector;
-
-    private int ysector;
-
-    private int sectorSize;
+    private LinkedList<Point> mPath;
 
 
     public void init()
     {
 
-        items = new ArrayList<Item>();
+        mItems = new ArrayList<Item>();
+        mMap = new IslandMap( Constants.ITEM_DIMENTION );
+        mMap.loadIcons( Constants.RESOURCE_ISLAND_SCENARIO_MAP_ICONS );
+        mMap.loadMap( Constants.RESOURCE_ISLAND_SCENARIO_MAP );
+        mMap.loadCastleMap( Constants.RESOURCE_ISLAND_SCENARIO_CASTLE_MAP );
 
-        // load map
-        tileMap = new IslandMap( Constants.ITEM_DIMENTION );
-        tileMap.loadTiles( "/map_icons.jpg" );
-        tileMap.loadMap( "/island_map.txt" );
+        mPath = new LinkedList<>();
+        mPlayer = new Player( mMap );
 
-        // create player
-        player = new Player( tileMap );
-
-        // initialize player
-        player.setTilePosition( Constants.PLAYER_INITIAL_POSITION,
+        mPlayer.setTilePosition( Constants.PLAYER_INITIAL_POSITION,
             Constants.PLAYER_INITIAL_POSITION );
-
-        // set up camera position
-        sectorSize = Constants.WIDTH;
-        xsector = player.getx() / sectorSize;
-        ysector = player.gety() / sectorSize;
-        tileMap.setPositionImmediately( -xsector * sectorSize, -ysector * sectorSize );
     }
 
 
     public void update()
     {
 
-        // check keys
-        handleInput();
+        handleKeyEvents();
 
-        xsector = player.getx() / sectorSize;
-        ysector = player.gety() / sectorSize;
-        tileMap.setPosition( -xsector * sectorSize, -ysector * sectorSize );
-        tileMap.update();
+        handleMouseEvent();
+        mMap.update();
 
-        if ( tileMap.isMoving() )
-            return;
-
-        player.update();
+        mPlayer.update();
     }
 
 
     public void draw( Graphics2D g )
     {
-        tileMap.draw( g );
-        player.draw( g );
-        for ( Item i : items )
+        mMap.draw( g );
+        mPlayer.draw( g );
+        for ( Item i : mItems )
         {
             i.draw( g );
         }
 
-        g.setColor( java.awt.Color.BLACK );
+        g.setColor( Color.BLACK );
 
     }
 
 
-    public void handleInput()
+    public void handleKeyEvents()
     {
-        if ( Keys.isPressed( Keys.ESCAPE ) )
+        if ( mController.isDown( KeyEvent.VK_LEFT ) )
         {
+            mPlayer.setLeft();
+        }
+        if ( mController.isDown( KeyEvent.VK_RIGHT ) )
+        {
+            mPlayer.setRight();
+        }
+        if ( mController.isDown( KeyEvent.VK_UP ) )
+        {
+            mPlayer.setUp();
+        }
+        if ( mController.isDown( KeyEvent.VK_DOWN ) )
+        {
+            mPlayer.setDown();
+        }
+
+    }
+
+
+    private void handleMouseEvent()
+    {
+        if ( !mPath.isEmpty() )
+        {
+            Point point = mPath.poll();
+            mPlayer.setTilePosition( point.y, point.x );
+        }
+    }
+
+
+    @Override
+    public void handleMouseClicked( MouseEvent e )
+    {
+        if ( !mPath.isEmpty() )
+        {
+            return;
+        }
+        Point to = mPlayer.toPosition( e.getX(), e.getY() );
+
+        PathOfMoving result = findPath( to );
+        if ( result != null )
+        {
+            PathOfMoving head = result;
+            while ( head != null )
+            {
+                mPath.add( head.getPoint() );
+                head = head.getNext();
+            }
+
+        }
+        else
+        {
+            mPath.clear();
+        }
+
+    }
+
+
+    private PathOfMoving findPath( Point fromPoint )
+    {
+        PathOfMoving result = null;
+        PathOfMoving from = new PathOfMoving( fromPoint, null );
+        Point target = mPlayer.getPosition();
+        LinkedList<PathOfMoving> q = new LinkedList<>();
+        q.add( from );
+        int[][] moves = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+        int[][] map = mMap.getMap();
+        boolean[][] visited = new boolean[map.length][map[0].length];
+        visited[from.getPoint().y][from.getPoint().x] = true;
+
+        while ( !q.isEmpty() )
+        {
+            PathOfMoving p = q.poll();
+            if ( p.getPoint().equals( target ) )
+            {
+                result = p;
+                break;
+            }
+            for ( int[] m : moves )
+            {
+                Point next = new Point( p.getPoint() );
+
+                next.translate( m[0], m[1] );
+                if ( inside( map, next ) && !visited[next.y][next.x]
+                    && mMap.getType( next.y, next.x ) != MapImage.BLOCKED )
+                {
+                    q.add( new PathOfMoving( next, p ) );
+                    visited[next.y][next.x] = true;
+                }
+            }
 
         }
 
-        if ( Keys.isDown( Keys.LEFT ) )
-            player.setLeft();
-        if ( Keys.isDown( Keys.RIGHT ) )
-            player.setRight();
-        if ( Keys.isDown( Keys.UP ) )
-            player.setUp();
-        if ( Keys.isDown( Keys.DOWN ) )
-            player.setDown();
-        if ( Keys.isPressed( Keys.SPACE ) )
-            player.setAction();
+        return result;
+    }
+
+
+    private boolean inside( int[][] map, Point p )
+    {
+        return p.x >= 0 && p.x < map[0].length && p.y >= 0 && p.y < map.length;
     }
 
 }

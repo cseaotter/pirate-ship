@@ -19,89 +19,60 @@ public class Player extends Actor
 
     private final int UP = 0;
 
-    private long ticks;
+    private long mTicks;
 
     private PlayerImage mPlayerImage;
 
 
-    public Player( IslandMap tm )
+    public Player( IslandMap map )
     {
 
-        super( tm );
+        super( map );
 
         width = Constants.PLAYER_DIMENTION;
         height = Constants.PLAYER_DIMENTION;
         moveSpeed = Constants.PLAYER_MOVE_SPEED;
         mPlayerImage = new PlayerImage();
-        animation.setFrames( mPlayerImage.getPlayerImage( DOWN ) );
-        animation.setDelay( 10 );
+        mAnimation.setFrames( mPlayerImage.getPlayerImage( DOWN ) );
+        mAnimation.setDelay( 10 );
     }
 
 
-    private void setAnimation( int i, BufferedImage[] bi, int d )
+    private void setAnimation( int frame, BufferedImage[] image, int delay )
     {
-        currentAnimation = i;
-        animation.setFrames( bi );
-        animation.setDelay( d );
+        mCurrentAnimation = frame;
+        mAnimation.setFrames( image );
+        mAnimation.setDelay( delay );
     }
 
 
     public long getTicks()
     {
-        return ticks;
-    }
-
-
-    public void setDown()
-    {
-        super.setDown();
-    }
-
-
-    public void setLeft()
-    {
-        super.setLeft();
-    }
-
-
-    public void setRight()
-    {
-        super.setRight();
-    }
-
-
-    public void setUp()
-    {
-        super.setUp();
-    }
-
-
-    public void setAction()
-    {
+        return mTicks;
     }
 
 
     public void update()
     {
 
-        ticks++;
+        mTicks++;
 
-        if ( down && currentAnimation != DOWN )
+        if ( down && mCurrentAnimation != DOWN )
         {
             setAnimation( DOWN, mPlayerImage.getPlayerImage( DOWN ), 10 );
         }
 
-        if ( left && currentAnimation != LEFT )
+        if ( left && mCurrentAnimation != LEFT )
         {
             setAnimation( LEFT, mPlayerImage.getPlayerImage( LEFT ), 10 );
         }
 
-        if ( right && currentAnimation != RIGHT )
+        if ( right && mCurrentAnimation != RIGHT )
         {
             setAnimation( RIGHT, mPlayerImage.getPlayerImage( RIGHT ), 10 );
         }
 
-        if ( up && currentAnimation != UP )
+        if ( up && mCurrentAnimation != UP )
         {
             setAnimation( UP, mPlayerImage.getPlayerImage( UP ), 10 );
         }

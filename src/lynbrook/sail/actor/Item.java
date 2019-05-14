@@ -24,7 +24,6 @@ public class Item extends Actor
 
     public void draw( Graphics2D g )
     {
-        setMapPosition();
         g.drawImage( image, x + xmap - width / 2, y + ymap - height / 2, null );
     }
 

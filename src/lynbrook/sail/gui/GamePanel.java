@@ -8,23 +8,18 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 import lynbrook.sail.controller.GameController;
-import lynbrook.sail.controller.Keys;
 import lynbrook.sail.data.Constants;
 
 
-public class GamePanel extends JPanel implements Runnable, KeyListener
+public class GamePanel extends JPanel implements Runnable
 {
-    private BufferedImage image;
+    private BufferedImage mMemoryImage;
 
-    private Graphics2D g;
+    private Graphics2D mMemoryGraphics;
 
-    private boolean running;
+    private boolean mThreadRunning;
 
-    private final int FPS = 30;
-
-    private final int TARGET_TIME = 1000 / FPS;
-
-    private static final long serialVersionUID = 100L;
+    private static final long serialVersionUID = Constants.SERIAL_VERSION_NUMBER;
 
     private Thread mGameThread;
 
@@ -46,7 +41,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener
 
         if ( mGameThread == null )
         {
-            addKeyListener( this );
+            mThreadRunning = true;
+            mMemoryImage = new BufferedImage( Constants.WIDTH, Constants.HEIGHT2, 1 );
+            mMemoryGraphics = (Graphics2D)mMemoryImage.getGraphics();
+            mController = new GameController();
+            addKeyListener( mController );
+            addMouseListener( mController );
             mGameThread = new Thread( this );
             mGameThread.start();
         }
@@ -55,21 +55,20 @@ public class GamePanel extends JPanel implements Runnable, KeyListener
 
     public void run()
     {
-        init();
         long start;
         long elapsed;
         long wait;
 
-        while ( running )
+        while ( mThreadRunning )
         {
 
             start = System.nanoTime();
             update();
             elapsed = System.nanoTime() - start;
 
-            wait = TARGET_TIME - elapsed / 1000000;
+            wait = Constants.TARGET_TIME - elapsed / 1000000;
             if ( wait < 0 )
-                wait = TARGET_TIME;
+                wait = Constants.TARGET_TIME;
 
             try
             {
@@ -85,39 +84,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener
     }
 
 
-    private void init()
-    {
-        running = true;
-        image = new BufferedImage( Constants.WIDTH, Constants.HEIGHT2, 1 );
-        g = (Graphics2D)image.getGraphics();
-        mController = new GameController();
-    }
-
-
-    public void keyTyped( KeyEvent key )
-    {
-    }
-
-
-    public void keyPressed( KeyEvent key )
-    {
-        Keys.keySet( key.getKeyCode(), true );
-    }
-
-
-    public void keyReleased( KeyEvent key )
-    {
-        Keys.keySet( key.getKeyCode(), false );
-    }
-
-
     private void update()
     {
         mController.update();
-        Keys.copy();
-        mController.draw( g );
+        mController.draw( mMemoryGraphics );
         Graphics g2 = getGraphics();
-        g2.drawImage( image, 0, 0, Constants.WIDTH, Constants.HEIGHT2, null );
+        g2.drawImage( mMemoryImage, 0, 0, Constants.WIDTH, Constants.HEIGHT2, null );
         g2.dispose();
     }
 

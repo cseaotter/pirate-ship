@@ -19,41 +19,41 @@ public class IslandMap
 
     private int y;
 
-    private int xdest;
+    private int xDest;
 
-    private int ydest;
+    private int yDest;
 
     private int speed;
 
-    private boolean moving;
-
     // bounds
-    private int xmin;
+    private int xMin;
 
-    private int ymin;
+    private int yMin;
 
-    private int xmax;
+    private int xMax;
 
-    private int ymax;
+    private int yMax;
 
     // map
-    private int[][] map;
+    private int[][] mMap;
 
     private int itemSize;
 
-    private int numRows;
+    private int mMapRows;
 
-    private int numCols;
+    private int mMapCols;
 
-    private int width;
+    private int mWidth;
 
-    private int height;
+    private int mHeight;
 
     private BufferedImage images;
 
+    private BufferedImage mCastleMap;
+
     private int numItemPerRow;
 
-    private MapImage[][] tiles;
+    private MapImage[][] mIcons;
 
     // drawing
     private int rowOffset;
@@ -74,7 +74,7 @@ public class IslandMap
     }
 
 
-    public void loadTiles( String s )
+    public void loadIcons( String s )
     {
 
         try
@@ -82,22 +82,22 @@ public class IslandMap
 
             images = ImageIO.read( getClass().getResourceAsStream( s ) );
             numItemPerRow = images.getWidth() / itemSize;
-            tiles = new MapImage[2][numItemPerRow];
+            mIcons = new MapImage[2][numItemPerRow];
 
             BufferedImage subimage;
             for ( int col = 0; col < numItemPerRow; col++ )
             {
                 subimage = images.getSubimage( col * itemSize, 0, itemSize, itemSize );
-                tiles[0][col] = new MapImage( subimage, MapImage.BLOCKED );
+                mIcons[0][col] = new MapImage( subimage, MapImage.BLOCKED );
                 subimage = images.getSubimage( col * itemSize, itemSize, itemSize, itemSize );
-                tiles[1][col] = new MapImage( subimage, MapImage.BLOCKED );
+                mIcons[1][col] = new MapImage( subimage, MapImage.BLOCKED );
             }
             // meadow;
-            tiles[0][2].setType( MapImage.NORMAL );
+            mIcons[0][2].setType( MapImage.NORMAL );
             // Crown
-            tiles[0][3].setType( MapImage.NORMAL );
+            mIcons[0][3].setType( MapImage.NORMAL );
             // castle
-            tiles[1][2].setType( MapImage.NORMAL );
+            mIcons[1][2].setType( MapImage.NORMAL );
 
         }
         catch ( Exception e )
@@ -105,6 +105,20 @@ public class IslandMap
             e.printStackTrace();
         }
 
+    }
+
+
+    public void loadCastleMap( String s )
+    {
+        try
+        {
+            mCastleMap = ImageIO.read( getClass().getResourceAsStream( s ) );
+
+        }
+        catch ( Exception e )
+        {
+
+        }
     }
 
 
@@ -117,27 +131,25 @@ public class IslandMap
             InputStream in = getClass().getResourceAsStream( s );
             BufferedReader br = new BufferedReader( new InputStreamReader( in ) );
 
-            numCols = Integer.parseInt( br.readLine() );
-            numRows = Integer.parseInt( br.readLine() );
-            map = new int[numRows][numCols];
-            width = numCols * itemSize;
-            height = numRows * itemSize;
+            mMapCols = Integer.parseInt( br.readLine() );
+            mMapRows = Integer.parseInt( br.readLine() );
+            mMap = new int[mMapRows][mMapCols];
+            mWidth = mMapCols * itemSize;
+            mHeight = mMapRows * itemSize;
 
-            xmin = Constants.WIDTH - width;
-            xmin = -width;
-            xmax = 0;
-            ymin = Constants.HEIGHT - height;
-            ymin = -height;
-            ymax = 0;
+            xMin = -mWidth;
+            xMax = 0;
+            yMin = -mHeight;
+            yMax = 0;
 
             String delims = "\\s+";
-            for ( int row = 0; row < numRows; row++ )
+            for ( int row = 0; row < mMapRows; row++ )
             {
                 String line = br.readLine();
-                String[] tokens = line.split( delims );
-                for ( int col = 0; col < numCols; col++ )
+                String[] oneRowItems = line.split( delims );
+                for ( int col = 0; col < mMapCols; col++ )
                 {
-                    map[row][col] = Integer.parseInt( tokens[col] );
+                    mMap[row][col] = Integer.parseInt( oneRowItems[col] );
                 }
             }
 
@@ -168,65 +180,53 @@ public class IslandMap
     }
 
 
-    public int getWidth()
+    public int[][] getMap()
     {
-        return width;
-    }
-
-
-    public int getHeight()
-    {
-        return height;
+        return mMap;
     }
 
 
     public int getNumRows()
     {
-        return numRows;
+        return mMapRows;
     }
 
 
     public int getNumCols()
     {
-        return numCols;
+        return mMapCols;
     }
 
 
     public int getType( int row, int col )
     {
-        int rc = map[row][col];
+        int rc = mMap[row][col];
         int r = rc / numItemPerRow;
         int c = rc % numItemPerRow;
-        return tiles[r][c].getType();
+        return mIcons[r][c].getType();
     }
 
 
     public int getIndex( int row, int col )
     {
-        return map[row][col];
-    }
-
-
-    public boolean isMoving()
-    {
-        return moving;
+        return mMap[row][col];
     }
 
 
     public void setTile( int row, int col, int index )
     {
-        map[row][col] = index;
+        mMap[row][col] = index;
     }
 
 
-    public void replace( int i1, int i2 )
+    public void replace( int x, int y )
     {
-        for ( int row = 0; row < numRows; row++ )
+        for ( int row = 0; row < mMapRows; row++ )
         {
-            for ( int col = 0; col < numCols; col++ )
+            for ( int col = 0; col < mMapCols; col++ )
             {
-                if ( map[row][col] == i1 )
-                    map[row][col] = i2;
+                if ( mMap[row][col] == x )
+                    mMap[row][col] = y;
             }
         }
     }
@@ -234,99 +234,103 @@ public class IslandMap
 
     public void setPosition( int x, int y )
     {
-        xdest = x;
-        ydest = y;
+        xDest = x;
+        yDest = y;
     }
 
 
-    public void setPositionImmediately( int x, int y )
+    public void checkBound()
     {
-        this.x = x;
-        this.y = y;
-    }
-
-
-    public void fixBounds()
-    {
-        if ( x < xmin )
-            x = xmin;
-        if ( y < ymin )
-            y = ymin;
-        if ( x > xmax )
-            x = xmax;
-        if ( y > ymax )
-            y = ymax;
+        if ( x < xMin )
+        {
+            x = xMin;
+        }
+        if ( y < yMin )
+        {
+            y = yMin;
+        }
+        if ( x > xMax )
+        {
+            x = xMax;
+        }
+        if ( y > yMax )
+        {
+            y = yMax;
+        }
     }
 
 
     public void update()
     {
-        if ( x < xdest )
+        if ( x < xDest )
         {
             x += speed;
-            if ( x > xdest )
+            if ( x > xDest )
             {
-                x = xdest;
+                x = xDest;
             }
         }
-        if ( x > xdest )
+        if ( x > xDest )
         {
             x -= speed;
-            if ( x < xdest )
+            if ( x < xDest )
             {
-                x = xdest;
+                x = xDest;
             }
         }
-        if ( y < ydest )
+        if ( y < yDest )
         {
             y += speed;
-            if ( y > ydest )
+            if ( y > yDest )
             {
-                y = ydest;
+                y = yDest;
             }
         }
-        if ( y > ydest )
+        if ( y > yDest )
         {
             y -= speed;
-            if ( y < ydest )
+            if ( y < yDest )
             {
-                y = ydest;
+                y = yDest;
             }
         }
 
-        fixBounds();
+        checkBound();
 
         colOffset = -this.x / itemSize;
         rowOffset = -this.y / itemSize;
 
-        if ( x != xdest || y != ydest )
-            moving = true;
-        else
-            moving = false;
+    }
 
+
+    public void drawCastle( Graphics2D g )
+    {
+        g.drawImage( mCastleMap, 0, 0, null );
     }
 
 
     public void draw( Graphics2D g )
     {
-
         for ( int row = rowOffset; row < rowOffset + numRowsToDraw; row++ )
         {
 
-            if ( row >= numRows )
+            if ( row >= mMapRows )
                 break;
 
             for ( int col = colOffset; col < colOffset + numColsToDraw; col++ )
             {
 
-                if ( col >= numCols )
+                if ( col >= mMapCols )
                     break;
 
-                int rc = map[row][col];
+                int rc = mMap[row][col];
                 int r = rc / numItemPerRow;
                 int c = rc % numItemPerRow;
 
-                g.drawImage( tiles[r][c].getImage(), x + col * itemSize, y + row * itemSize, null );
+                g.drawImage( mIcons[r][c].getImage(),
+                    x + col * itemSize,
+                    y + row * itemSize,
+                    null );
 
             }
 

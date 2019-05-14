@@ -15,12 +15,12 @@ public class PlayerImage
         {
             BufferedImage image = ImageIO
                 .read( PlayerImage.class.getResourceAsStream( "/ocean_block.jpg" ) );
-            int width = image.getWidth() / Constants.PLAYER_DIMENTION;
-            int height = image.getHeight() / Constants.PLAYER_DIMENTION;
-            mImages = new BufferedImage[height][width];
-            for ( int i = 0; i < height; i++ )
+            int rows = image.getHeight() / Constants.PLAYER_DIMENTION;
+            int cols = image.getWidth() / Constants.PLAYER_DIMENTION;
+            mImages = new BufferedImage[rows][cols];
+            for ( int i = 0; i < rows; i++ )
             {
-                for ( int j = 0; j < width; j++ )
+                for ( int j = 0; j < cols; j++ )
                 {
                     mImages[i][j] = image.getSubimage( j * Constants.PLAYER_DIMENTION,
                         i * Constants.PLAYER_DIMENTION,

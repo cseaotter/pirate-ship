@@ -1,7 +1,7 @@
 package lynbrook.sail.actor;
 
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.Point;
 
 import lynbrook.sail.gui.MapImage;
 import lynbrook.sail.gui.IslandMap;
@@ -41,7 +41,7 @@ public abstract class Actor
     // attributes
     protected int moveSpeed;
 
-    protected IslandMap map;
+    protected IslandMap mMap;
 
     protected int itemSize;
 
@@ -50,40 +50,16 @@ public abstract class Actor
     protected int ymap;
 
     // animation
-    protected Animation animation;
+    protected Animation mAnimation;
 
-    protected int currentAnimation;
+    protected int mCurrentAnimation;
 
 
-    public Actor( IslandMap tm )
+    public Actor( IslandMap map )
     {
-        map = tm;
-        itemSize = map.getTileSize();
-        animation = new Animation();
-    }
-
-
-    public int getx()
-    {
-        return x;
-    }
-
-
-    public int gety()
-    {
-        return y;
-    }
-
-
-    public int getRow()
-    {
-        return rowTile;
-    }
-
-
-    public int getCol()
-    {
-        return colTile;
+        mMap = map;
+        itemSize = mMap.getTileSize();
+        mAnimation = new Animation();
     }
 
 
@@ -98,8 +74,8 @@ public abstract class Actor
 
     public void setMapPosition()
     {
-        xmap = map.getx();
-        ymap = map.gety();
+        xmap = mMap.getx();
+        ymap = mMap.gety();
     }
 
 
@@ -148,7 +124,19 @@ public abstract class Actor
     }
 
 
-    public boolean validateNextPosition()
+    public Point getPosition()
+    {
+        return new Point( x / itemSize, y / itemSize );
+    }
+
+
+    public Point toPosition( int x, int y )
+    {
+        return new Point( x / itemSize, y / itemSize );
+    }
+
+
+    private boolean validateNextPosition()
     {
 
         if ( moving )
@@ -159,7 +147,7 @@ public abstract class Actor
 
         if ( left )
         {
-            if ( colTile == 0 || map.getType( rowTile, colTile - 1 ) == MapImage.BLOCKED )
+            if ( colTile == 0 || mMap.getType( rowTile, colTile - 1 ) == MapImage.BLOCKED )
             {
                 return false;
             }
@@ -170,8 +158,8 @@ public abstract class Actor
         }
         if ( right )
         {
-            if ( colTile == map.getNumCols()
-                || map.getType( rowTile, colTile + 1 ) == MapImage.BLOCKED )
+            if ( colTile == mMap.getNumCols()
+                || mMap.getType( rowTile, colTile + 1 ) == MapImage.BLOCKED )
             {
                 return false;
             }
@@ -182,7 +170,7 @@ public abstract class Actor
         }
         if ( up )
         {
-            if ( rowTile == 0 || map.getType( rowTile - 1, colTile ) == MapImage.BLOCKED )
+            if ( rowTile == 0 || mMap.getType( rowTile - 1, colTile ) == MapImage.BLOCKED )
             {
                 return false;
             }
@@ -193,8 +181,8 @@ public abstract class Actor
         }
         if ( down )
         {
-            if ( rowTile == map.getNumRows() - 1
-                || map.getType( rowTile + 1, colTile ) == MapImage.BLOCKED )
+            if ( rowTile == mMap.getNumRows() - 1
+                || mMap.getType( rowTile + 1, colTile ) == MapImage.BLOCKED )
             {
                 return false;
             }
@@ -209,7 +197,7 @@ public abstract class Actor
     }
 
 
-    public void getNextPosition()
+    private void getNextPosition()
     {
 
         if ( left && x > xdest )
@@ -255,14 +243,13 @@ public abstract class Actor
             colTile = x / itemSize;
         }
 
-        animation.update();
+        mAnimation.update();
 
     }
 
 
     public void draw( Graphics2D g )
     {
-        setMapPosition();
-        g.drawImage( animation.getImage(), x + xmap - width / 2, y + ymap - height / 2, null );
+        g.drawImage( mAnimation.getImage(), x + xmap - width / 2, y + ymap - height / 2, null );
     }
 }

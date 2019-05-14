@@ -1,6 +1,7 @@
 package lynbrook.sail.senario;
 
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
 
 import lynbrook.sail.controller.GameController;
 
@@ -25,5 +26,8 @@ public abstract class Scenario
     public abstract void draw( Graphics2D g );
 
 
-    public abstract void handleInput();
+    public abstract void handleKeyEvents();
+
+
+    public abstract void handleMouseClicked( MouseEvent e );
 }
