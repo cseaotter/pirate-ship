@@ -11,13 +11,13 @@ import lynbrook.sail.gui.IslandMap;
 public class Player extends Actor
 {
 
-    private final int DOWN = 0;
+    private final int DOWN = 2;
 
     private final int LEFT = 1;
 
-    private final int RIGHT = 2;
+    private final int RIGHT = 3;
 
-    private final int UP = 3;
+    private final int UP = 0;
 
     private long ticks;
 
