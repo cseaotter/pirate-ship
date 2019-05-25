@@ -1,52 +1,54 @@
 package lynbrook.sail.network;
 
-import java.io.*;
-import java.net.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 
-public class Server
+public class Server implements Runnable
 {
-	private int totalPlayer;
-	private ServerSocket server;
-	private boolean fullPlayer;
+	private Socket s;
+	private DataInputStream is;
+	private DataOutputStream os;
+	private int playerNum;
 
-	public Server()
+	public Server(Socket so, int pN)
 	{
-		System.out.print("SERVER");
-		totalPlayer = 0;
-		fullPlayer = true;
+		s = so;
+		playerNum = pN;
+
 		try
 		{
-			server = new ServerSocket(123456);
-		} catch (IOException e)
+			is = new DataInputStream(s.getInputStream());
+
+			os = new DataOutputStream(s.getOutputStream());
+
+		} catch (IOException x)
 		{
-			// TODO Auto-generated catch block
-			System.out.println("IOEXception server");
+			System.out.println("Server constructor IOException");
+
 		}
 	}
 
-	public void connecting()
+	public void run()
 	{
-		System.out.println("connecting...");
-		if (fullPlayer)
-		{
 
-			System.out.println("No more PLAYERS!!!");
-		}
-		if (!fullPlayer)
+		try
 		{
-			while (totalPlayer < 2)
-			{
-				try
-				{
-					Socket temp = server.accept();
-				} catch (IOException e)
-				{
-					// TODO Auto-generated catch block
-					System.out.println("IOEXception server");
-				}
-			}
+			os.writeInt(playerNum);
+			os.flush();
+		} catch (IOException k)
+		{
+			System.out.println("Server run method IOException");
+
 		}
-		totalPlayer++;
+	}
+
+	public static void main(String argv[])
+	{
+		PlayerServer ps = new PlayerServer();
+		ps.connecting();
+
 	}
 
 }
