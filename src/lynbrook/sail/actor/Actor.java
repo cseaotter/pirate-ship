@@ -81,8 +81,8 @@ public abstract class Actor
 
     public void setTilePosition( int i1, int i2 )
     {
-        y = i1 * itemSize + itemSize / 2;
-        x = i2 * itemSize + itemSize / 2;
+        x = i1 * itemSize + itemSize / 2;
+        y = i2 * itemSize + itemSize / 2;
         xdest = x;
         ydest = y;
     }

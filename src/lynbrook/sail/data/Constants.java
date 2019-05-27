@@ -26,7 +26,16 @@ public class Constants
 
     public static final int DEFAULT_ANIMATION_DELAY_FRAMES = 2;
 
+    public static final int PIRATE_VS_KING_PORT = 3456;
+
+    // the server's ip address for the pirate to connect. the pirate needs to temporarily change this.
+    public static final String PIRATE_VS_KING_IP_ADDRESS = "192.168.0.73";
+
     public static final String RESOURCE_ISLAND_SCENARIO_MAP = "/island_map.txt";
+
+    public static final String RESOURCE_FRONT_PAGE_SCENARIO = "/front_page.jpg";
+
+    public static final String RESOURCE_INSTRUCTION_PAGE_SCENARIO = "/instruction_page.png";
 
     public static final String RESOURCE_ISLAND_SCENARIO_MAP_ICONS = "/map_icons.jpg";
 

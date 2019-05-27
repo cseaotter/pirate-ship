@@ -3,6 +3,7 @@ package lynbrook.sail.senario;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 
+import lynbrook.sail.actor.Player;
 import lynbrook.sail.controller.GameController;
 
 
@@ -17,9 +18,6 @@ public abstract class Scenario
     }
 
 
-    public abstract void init();
-
-
     public abstract void update();
 
 
@@ -27,6 +25,12 @@ public abstract class Scenario
 
 
     public abstract void handleKeyEvents();
+
+
+    public Player getCurrentPlayer()
+    {
+        return null;
+    }
 
 
     public abstract void handleMouseClicked( MouseEvent e );

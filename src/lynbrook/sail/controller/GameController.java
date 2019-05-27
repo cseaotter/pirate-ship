@@ -1,6 +1,7 @@
 package lynbrook.sail.controller;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -9,10 +10,15 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import lynbrook.sail.senario.Scenario;
+import lynbrook.sail.backend.DataUpdate;
+import lynbrook.sail.backend.MessageRunnable;
+import lynbrook.sail.backend.PlayerData;
+import lynbrook.sail.data.Constants;
+import lynbrook.sail.senario.BeginningPage;
 import lynbrook.sail.senario.IslandScenario;
 
 
-public class GameController extends KeyAdapter implements MouseListener
+public class GameController extends KeyAdapter implements MouseListener, DataUpdate
 {
     public static final int SCENARIO_BEGIN = 0;
 
@@ -20,13 +26,37 @@ public class GameController extends KeyAdapter implements MouseListener
 
     private Map<Integer, Boolean> mKeyEventMap;
 
+    private Map<Integer, PlayerData> mPlayerDataMap;
+
     private Scenario mScenario;
+
+    private int role;
 
 
     public GameController()
     {
         mKeyEventMap = new TreeMap<>();
-        switchScenario( SCENARIO_ISLAND );
+        mPlayerDataMap = new TreeMap<>();
+        role = PlayerData.ROLE_KING;
+        switchScenario( SCENARIO_BEGIN );
+    }
+
+
+    public Map<Integer, PlayerData> getPlayerDataMap()
+    {
+        return mPlayerDataMap;
+    }
+
+
+    public void setCurrentRole( int role )
+    {
+        this.role = role;
+    }
+
+
+    public int getCurrentRole()
+    {
+        return role;
     }
 
 
@@ -41,10 +71,14 @@ public class GameController extends KeyAdapter implements MouseListener
         switch ( scenario )
         {
             case SCENARIO_BEGIN: // story line
+                mScenario = new BeginningPage( this );
                 break;
             case SCENARIO_ISLAND: // map
+                System.out.println( "current role = " + role );
                 mScenario = new IslandScenario( this );
-                mScenario.init();
+                Thread messageThread = new Thread(
+                    new MessageRunnable( role, Constants.PIRATE_VS_KING_IP_ADDRESS, this ) );
+                messageThread.start();
                 break;
             // to do: fighting scenario
         }
@@ -127,6 +161,26 @@ public class GameController extends KeyAdapter implements MouseListener
     public void mouseExited( MouseEvent e )
     {
         // TODO Auto-generated method stub
+    }
+
+
+    @Override
+    public void onUpdateData( Map<Integer, PlayerData> playerMap )
+    {
+        // TODO Auto-generated method stub
+        for ( Map.Entry<Integer, PlayerData> entry : playerMap.entrySet() )
+        {
+
+            mPlayerDataMap.put( entry.getKey(), entry.getValue() );
+        }
+
+    }
+
+
+    @Override
+    public Point getCurrentLocation()
+    {
+        return mScenario != null ? mScenario.getCurrentPlayer().getPosition() : null;
     }
 
 }
