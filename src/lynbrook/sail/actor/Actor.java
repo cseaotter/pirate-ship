@@ -252,4 +252,29 @@ public abstract class Actor
     {
         g.drawImage( mAnimation.getImage(), x + xmap - width / 2, y + ymap - height / 2, null );
     }
+    
+    public boolean getMoving()
+    {
+    	return moving;
+    }
+    
+    public boolean getLeft()
+    {
+    	return left;
+    }
+    
+    public boolean getRight()
+    {
+    	return right;
+    }
+    
+    public boolean getUp()
+    {
+    	return up;
+    }
+    
+    public boolean getDown()
+    {
+    	return down;
+    }
 }
