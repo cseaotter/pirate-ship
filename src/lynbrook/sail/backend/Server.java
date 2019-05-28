@@ -7,6 +7,7 @@ public class Server
     private int totalPlayer;
     private ServerSocket server;
     private boolean fullPlayer;
+    private UI ui;
     public static final int PORT = 8080;
     
     public Server() {
@@ -63,12 +64,19 @@ public class Server
                      PrintWriter out = new PrintWriter(new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true));
                      Player player = new Player();
                      player.set( out );
+                     
+                     
+                     ui.displayChooseRole(); 
+                     player.sendMessage("client:choose:role");
+                     
+                     player.getGameEngine().takeServerChoice(Role.RoleName.king, System.currentTimeMillis(), player); //this is for testing only
+                     
                      while(true)
                      {
-                         String str = in.readLine();
+                         String message = in.readLine();
                          
-                         
-                         player.processSocketMessage(str, out);
+                         System.out.println( message );
+                         player.processSocketMessage(message, out);
                      }
                      
                  }finally {

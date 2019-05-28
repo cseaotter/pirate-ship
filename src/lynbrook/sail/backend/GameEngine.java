@@ -48,6 +48,7 @@ public class GameEngine
        //similar to above but from the UI
        clientRoleRequested = roleNameRequested;
        clientRoleTimestamp = clientChoiceTimeStamp;
+       
        if (canMakeDecision()) {
            makeRoleDecision(player);
        }
@@ -66,12 +67,15 @@ public class GameEngine
            if (clientRoleTimestamp > serverRoletimestamp)
            {
                player.assignRole( clientRoleRequested );
-               output.sendMessage("client:becomes:" + clientRoleRequested); 
+               output.sendMessage("client:becomes:" + clientRoleRequested);
+               System.out.println( clientRoleRequested);
            }
            else
            {
                player.assignRole( serverRoleRequested );
                output.sendMessage("client:becomes:" + serverRoleRequested); 
+               System.out.println( clientRoleRequested);
+
            }
            
        }
@@ -79,6 +83,8 @@ public class GameEngine
        {
            player.assignRole( serverRoleRequested );
            output.sendMessage("client:becomes:" + clientRoleRequested); 
+           System.out.println( clientRoleRequested);
+
        }
        //peice of code on server
        //draw map of island
@@ -86,8 +92,6 @@ public class GameEngine
        
        
        //ex.
-       
-       player.assignRole( Role.RoleName.king);
        
    }
    

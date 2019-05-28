@@ -41,7 +41,9 @@ public class Player
        switch (message) {
            case "client:choose:role" : // this message is sent by GameEngine or GameRule class from SocketServer
              //  Socket client process this message
-             // ui.displayRoleChoices()  
+               ui.displayChooseRole(); // integrating UI   
+               sendMessage("client:choose:pirate"); //this is only for testing
+               break;
            case "client:choose:pirate" :
              // After socket client's computer make a role choice, it sends msg to socket server
              gameEngine.takeClientChoice(RoleName.pirate, clientChoiceTimeStamp, this);
@@ -222,11 +224,16 @@ public class Player
         
     }
     
+    public GameEngine getGameEngine()
+    {
+        return gameEngine;
+    }
 
     
 
     public void sendMessage(String str)
     {
+        System.out.println("sending message: " + str); // this is for testing
         out.println(str);
         
         //UI method calls this method and the parameter is "pirate:shoot:(coordinates)" or moveShip e.t.c...

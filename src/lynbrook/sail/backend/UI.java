@@ -51,6 +51,11 @@ public class UI
         
     }
     
+    public void displayChooseRole()
+    {
+        
+    }
+    
     /*
     public void updateBulletLocation(int x, int y)
     {
