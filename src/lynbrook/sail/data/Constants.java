@@ -33,7 +33,7 @@ public class Constants
 
     public static final String RESOURCE_ISLAND_SCENARIO_MAP = "/island_map.txt";
 
-    public static final String RESOURCE_FRONT_PAGE_SCENARIO = "/front_page.jpg";
+    public static final String RESOURCE_FRONT_PAGE_SCENARIO = "/front_page.png";
 
     public static final String RESOURCE_INSTRUCTION_PAGE_SCENARIO = "/instruction_page.png";
 
