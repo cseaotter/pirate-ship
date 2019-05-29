@@ -12,7 +12,7 @@ import java.util.TreeMap;
 import lynbrook.sail.senario.Scenario;
 import lynbrook.sail.backend.DataUpdate;
 import lynbrook.sail.data.Constants;
-import lynbrook.sail.network.MessageRunnable;
+import lynbrook.sail.network.NetworkRunnable;
 import lynbrook.sail.network.PlayerData;
 import lynbrook.sail.senario.BeginningPage;
 import lynbrook.sail.senario.IslandScenario;
@@ -70,7 +70,7 @@ public class GameController extends KeyAdapter implements MouseListener, DataUpd
 		case SCENARIO_ISLAND: // map
 			System.out.println("current role = " + role);
 			mScenario = new IslandScenario(this);
-			Thread messageThread = new Thread(new MessageRunnable(role, Constants.PIRATE_VS_KING_IP_ADDRESS, this));
+			Thread messageThread = new Thread(new NetworkRunnable(role, Constants.PIRATE_VS_KING_IP_ADDRESS, this));
 			messageThread.start();
 			break;
 		// to do: fighting scenario

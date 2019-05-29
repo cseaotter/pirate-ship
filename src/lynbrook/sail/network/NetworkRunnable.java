@@ -13,7 +13,7 @@ import java.util.TreeMap;
 import lynbrook.sail.backend.DataUpdate;
 import lynbrook.sail.data.Constants;
 
-public class MessageRunnable implements Runnable
+public class NetworkRunnable implements Runnable
 {
 
 	private DataUpdate dataUpdate;
@@ -28,7 +28,7 @@ public class MessageRunnable implements Runnable
 
 	private String address;
 
-	public MessageRunnable(int role, String address, DataUpdate dataUpdate)
+	public NetworkRunnable(int role, String address, DataUpdate dataUpdate)
 	{
 		this.role = role;
 		this.address = address;
