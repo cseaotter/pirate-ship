@@ -1,9 +1,11 @@
 package lynbrook.sail.backend;
 
+import java.awt.Point;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
 import lynbrook.sail.backend.Role.RoleName;
+import lynbrook.sail.controller.GameController;
 
 
 /**
@@ -19,12 +21,13 @@ import lynbrook.sail.backend.Role.RoleName;
  *
  *  @author  Sources: none
  */
-public class Player
+public class SocketMessageService implements PlayerDataService
 {
-    private Role role;
+    //private Role role;
     private UI ui;
     private GameEngine gameEngine; //running on socket server side
     private PrintWriter out;
+    private GameController gameController;
     
     // process received messages.
     // this player class runs on both computers
@@ -33,16 +36,17 @@ public class Player
     // Socket is only used to convey message to the other computer:
     //  1. react
     //  2. update UI
-    public void processSocketMessage(String message, PrintWriter output) {
+    public void onUpdateData( PlayerData localPlayerData, PlayerData remotePlayerData ) {
         //if message in format of "client:choose:<role>:<timestamp>"
         // parse timestamp
         long clientChoiceTimeStamp = 2349239;
         //strip message to "client:choose:<role>"
-       switch (message) {
+       switch (remotePlayerData.getMessage()) {
            case "client:choose:role" : // this message is sent by GameEngine or GameRule class from SocketServer
              //  Socket client process this message
                ui.displayChooseRole(); // integrating UI   
-               sendMessage("client:choose:pirate"); //this is only for testing
+               gameController.switchScenario( GameController.SCENARIO_BEGIN );
+               sendMessage(localPlayerData, "client:choose:pirate"); //this is only for testing
                break;
            case "client:choose:pirate" :
              // After socket client's computer make a role choice, it sends msg to socket server
@@ -52,11 +56,11 @@ public class Player
                gameEngine.takeClientChoice(RoleName.king, clientChoiceTimeStamp, this);
                break;
            case "client:becomes:pirate" :
-               role = new Pirate();
+               remotePlayerData.setRole( PlayerData.ROLE_PIRATE );
                //UI draws island (client side)
                break;
            case "client:becomes:king" :
-               role = new King();
+               remotePlayerData.setRole( PlayerData.ROLE_KING);
                //UI draws island (client side)
                break;
                /*
@@ -93,7 +97,7 @@ public class Player
                break;
                */
            default:
-               defaultprocess(message);
+               defaultprocess(localPlayerData, remotePlayerData, remotePlayerData.getMessage());
                break;
                
        }
@@ -104,12 +108,22 @@ public class Player
         
     }
     
-    public void defaultprocess(String msg)
+    public void defaultprocess(PlayerData localPlayerData, PlayerData remotePlayerData, String msg)
     {
         //getting roles, what the message said it did, and details
+        
         String action = "";
         int firstcolon = msg.indexOf( ":" );
         String playerRole = msg.substring( 0, firstcolon );
+        int playerRoleInt = 0;
+        if (playerRole.equals( "pirate" ))
+        {
+            playerRoleInt = PlayerData.ROLE_PIRATE;
+        }
+        else
+        {
+            playerRoleInt = PlayerData.ROLE_KING;
+        }
         msg = msg.substring( firstcolon+1 );
         int secondcolon = msg.indexOf( ":" );
         if (secondcolon != -1)
@@ -125,7 +139,7 @@ public class Player
 
         // testing what to do with what message said
         //updating what happened on the other screen
-        if (action.equals("shoot") && role.equals( playerRole )) // pirate shoot x,y
+        if (action.equals("shoot") && localPlayerData.getRole() == playerRoleInt ) // pirate shoot x,y
         {
             String strx = msg.substring( 0, msg.indexOf( "," )); //from message
             String stry = msg.substring( msg.indexOf( "," ) + 1); //from message
@@ -134,14 +148,14 @@ public class Player
             int y = Integer.parseInt(stry);
             
             ui.drawExplosion(x, y);
-            role.calcAndUpdateHealth(x, y);
+            //calcAndUpdateHealth(x, y); TODO
             
-            sendMessage(role.getRoleName() + ":updatehealth:" + role.getHealth());
-            if (role.getHealth() < 0)
+            sendMessage(remotePlayerData, playerRole + ":updatehealth:" + localPlayerData.getHealth());
+            if (localPlayerData.getHealth() < 0)
             {
                 if (gameEngine == null)//client
                 {
-                    sendMessage(role.getRoleName() + ":lostloc"); 
+                    sendMessage(remotePlayerData, localPlayerData.getRoleString() + ":lostloc"); 
                     
                 }
                 else
@@ -150,26 +164,26 @@ public class Player
                     if (gameEngine.isWinner())
                     {
                         ui.displayGameFinished(gameEngine.whoWonGame() );
-                        sendMessage(role.getRoleName() + ":won"); 
+                        sendMessage(remotePlayerData, localPlayerData.getRoleString()  + ":won"); 
                     }
-                    sendMessage(role.getRoleName() + ":lostBattle"); 
+                    sendMessage(remotePlayerData, localPlayerData.getRoleString()  + ":lostBattle"); 
                 }
                 ui.displayIslandMap( msg );
             }
             
         }
-        else if(action.equals("updatehealth") && role.equals( playerRole )) // pirate updatehealth point
+        else if(action.equals("updatehealth") && localPlayerData.getRole() == playerRoleInt) // pirate updatehealth point
         {
-            ui.updateHealth( 5, role.getRoleName() );
+            ui.updateHealth( 5, localPlayerData.getRoleString() );
             
         }
-        else if (action.equals( "attack" ) && role.equals("pirate")) //message should be something like pirate:attack:loc1
+        else if (action.equals( "attack" ) && localPlayerData.getRoleString().equals("pirate")) //message should be something like pirate:attack:loc1
         {
             gameEngine.whichLoc(msg);
             ui.displayPopupWithTwoChoices();
         }
         
-        else if(action.equals("moveship") && role.equals( "pirate" ))
+        else if(action.equals("moveship") && localPlayerData.getRoleString().equals( "pirate" ))
         {
             String strx = msg.substring( 0, msg.indexOf( "," )); //from message
             String stry = msg.substring( msg.indexOf( "," ) + 1); //from message
@@ -186,7 +200,7 @@ public class Player
             if (gameEngine.isWinner())
             {
                 ui.displayGameFinished(gameEngine.whoWonGame() );
-                sendMessage(role.getRoleName() + ":won"); 
+                sendMessage(remotePlayerData, localPlayerData.getRoleString() + ":won"); 
             }
             else
             {
@@ -195,7 +209,7 @@ public class Player
             
             
         }
-        else if (action.equals( "lostBattle" ) && !role.equals( playerRole ))
+        else if (action.equals( "lostBattle" ) && !localPlayerData.getRoleString().equals( playerRole ))
         {
             ui.displayIslandMap( msg );
         }
@@ -231,10 +245,10 @@ public class Player
 
     
 
-    public void sendMessage(String str)
+    public void sendMessage(PlayerData localPlayerData, String str)
     {
         System.out.println("sending message: " + str); // this is for testing
-        out.println(str);
+        localPlayerData.setMessage( str );
         
         //UI method calls this method and the parameter is "pirate:shoot:(coordinates)" or moveShip e.t.c...
     }
@@ -244,15 +258,17 @@ public class Player
         out = output;
     }
     
-    public void assignRole(Role.RoleName roleName) {
-        if (roleName == Role.RoleName.king) {
-            role = new King();
-        } else if (roleName == Role.RoleName.pirate) {
-            role = new Pirate();
-        } else {
-            throw new IllegalArgumentException();
-        }
+    
+
+    @Override
+    public Point getCurrentLocation()
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
+
+ 
+ 
     
     
 }

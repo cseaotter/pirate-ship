@@ -23,6 +23,8 @@ public class GameController extends KeyAdapter implements MouseListener, DataUpd
     public static final int SCENARIO_BEGIN = 0;
 
     public static final int SCENARIO_ISLAND = 1;
+    
+    public
 
     private Map<Integer, Boolean> mKeyEventMap;
 

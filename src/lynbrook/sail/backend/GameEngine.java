@@ -35,7 +35,7 @@ public class GameEngine
         ( output ).sendMessage("client:choose:role");
     }
     
-   public void takeClientChoice(Role.RoleName roleNameRequested, long clientChoiceTimeStamp, Player player ) {
+   public void takeClientChoice(Role.RoleName roleNameRequested, long clientChoiceTimeStamp, SocketMessageService player ) {
        clientRoleRequested = roleNameRequested;
        clientRoleTimestamp = clientChoiceTimeStamp;
        if (canMakeDecision()) {
@@ -44,7 +44,7 @@ public class GameEngine
        
    }
    
-   public void takeServerChoice(Role.RoleName roleNameRequested, long clientChoiceTimeStamp, Player player) {
+   public void takeServerChoice(Role.RoleName roleNameRequested, long clientChoiceTimeStamp, SocketMessageService player) {
        //similar to above but from the UI
        clientRoleRequested = roleNameRequested;
        clientRoleTimestamp = clientChoiceTimeStamp;
@@ -59,21 +59,21 @@ public class GameEngine
       return clientRoleRequested != null && serverRoleRequested != null;
    }
    
-   private void makeRoleDecision(Player player) {
+   private void makeRoleDecision(PlayerData playerData) {
        //compare timestamp and request
        // make decision
        if (clientRoleRequested.equals( serverRoleRequested ))
        {
            if (clientRoleTimestamp > serverRoletimestamp)
            {
-               player.assignRole( clientRoleRequested );
-               output.sendMessage("client:becomes:" + clientRoleRequested);
+               playerData.setRoleString( clientRoleRequested.toString() );
+               playerData.setMessage("client:becomes:" + clientRoleRequested);
                System.out.println( clientRoleRequested);
            }
            else
            {
-               player.assignRole( serverRoleRequested );
-               output.sendMessage("client:becomes:" + serverRoleRequested); 
+               playerData.setRoleString( serverRoleRequested.toString() );
+               playerData.setMessage("client:becomes:" + serverRoleRequested); 
                System.out.println( clientRoleRequested);
 
            }
@@ -81,8 +81,8 @@ public class GameEngine
        }
        else
        {
-           player.assignRole( serverRoleRequested );
-           output.sendMessage("client:becomes:" + clientRoleRequested); 
+           playerData.setRoleString( serverRoleRequested.toString() );
+           playerData.setMessage("client:becomes:" + clientRoleRequested); 
            System.out.println( clientRoleRequested);
 
        }

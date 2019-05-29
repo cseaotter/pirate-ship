@@ -15,27 +15,32 @@ import lynbrook.sail.data.Constants;
 public class MessageRunnable implements Runnable
 {
 
-	private DataUpdate dataUpdate;
+	private PlayerDataService playerDataService;
 
-	private Map<Integer, PlayerData> playerMap;
+	//private Map<Integer, PlayerData> playerMap;
 
-	private static Socket client = null;
+	private static Socket socketClient = null;
 
 	private static ServerSocket server = null;
 
 	private int role;
 
 	private String address;
+	
+	boolean isSocketServer;
 
-	public MessageRunnable(int role, String address, DataUpdate dataUpdate)
+	public MessageRunnable(String address, PlayerDataService dataUpdate, boolean isSocketServer)
 	{
-		this.role = role;
+	    
+		this.isSocketServer = isSocketServer;
 		this.address = address;
-		this.dataUpdate = dataUpdate;
-		playerMap = new TreeMap<>();
+		this.playerDataService = dataUpdate;
+		//playerMap = new TreeMap<>();
 
 	}
 
+	
+	
 	@Override
 	public void run()
 	{
@@ -53,43 +58,48 @@ public class MessageRunnable implements Runnable
 
 	private void loop() throws IOException, ClassNotFoundException, SocketException
 	{
-		if (role == PlayerData.ROLE_KING)
+		if (isSocketServer)
 		{
 			server = new ServerSocket(Constants.PIRATE_VS_KING_PORT);
-			client = server.accept();
+			socketClient = server.accept();
 		} else
 		{
-			client = new Socket(address, Constants.PIRATE_VS_KING_PORT);
+			socketClient = new Socket(address, Constants.PIRATE_VS_KING_PORT);
 
 		}
-
-		while (client.isConnected())
+		PlayerData currentPlayerData = new PlayerData();
+		
+		
+		while (socketClient.isConnected())
 		{
 			initCurrentRoleIfNecessary();
 			long start = System.currentTimeMillis();
-			ObjectOutputStream sendObj = new ObjectOutputStream(client.getOutputStream());
-			Point point = dataUpdate.getCurrentLocation();
-			PlayerData player = playerMap.get(role);
-			player.setPoint(point);
-			sendObj.writeObject(playerMap.get(role));
-			sendObj = null;
-			ObjectInputStream getObj = new ObjectInputStream(client.getInputStream());
-			PlayerData remotePlayer = (PlayerData) getObj.readObject();
-			getObj = null;
-			playerMap.put(remotePlayer.getRole(), remotePlayer);
-			dataUpdate.onUpdateData(playerMap);
+			ObjectOutputStream outputStream = new ObjectOutputStream(socketClient.getOutputStream());
+			Point point = playerDataService.getCurrentLocation();
+			
+			currentPlayerData.setPoint(point);
+			outputStream.writeObject(currentPlayerData);
+			outputStream = null;
+			ObjectInputStream inputStream = new ObjectInputStream(socketClient.getInputStream());
+			PlayerData remotePlayerData = (PlayerData) inputStream.readObject();
+			inputStream = null;
+			//playerMap.put(remotePlayerData.getRole(), remotePlayerData);
+			playerDataService.onUpdateData(currentPlayerData, remotePlayerData);
+			
 			waitIfNecessary(start);
 		}
 	}
 
 	private void initCurrentRoleIfNecessary()
 	{
-		if (dataUpdate == null || playerMap.containsKey(role))
+	    /*
+		if (playerDataService == null || playerMap.containsKey(role))
 		{
 			return;
 		}
-		PlayerData playerData = new PlayerData(dataUpdate.getCurrentLocation(), "test ", role);
+		PlayerData playerData = new PlayerData(playerDataService.getCurrentLocation(), "test ", role);
 		playerMap.put(role, playerData);
+		*/
 	}
 
 	private void waitIfNecessary(long start)

@@ -62,7 +62,7 @@ public class Server
                      System.out.println( "Connection accepted: "+ socket );
                      BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                      PrintWriter out = new PrintWriter(new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true));
-                     Player player = new Player();
+                     SocketMessageService player = new SocketMessageService();
                      player.set( out );
                      
                      
