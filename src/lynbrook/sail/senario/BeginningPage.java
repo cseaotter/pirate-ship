@@ -8,7 +8,6 @@ import javax.imageio.ImageIO;
 
 import lynbrook.sail.controller.GameController;
 import lynbrook.sail.data.Constants;
-import lynbrook.sail.network.PlayerData;
 
 
 public class BeginningPage extends Scenario
@@ -74,18 +73,18 @@ public class BeginningPage extends Scenario
         // TODO Auto-generated method stub
         if ( mFrontPage.equals( mInstructionPage ) )
         {
-            mController.switchScenario( GameController.SCENARIO_ISLAND );
+            mController.switchScenario( Constants.SCENARIO_ISLAND );
         }
         else
         {
             // TODO:
             if ( e.getX() >= 640 )
             {
-                mController.setCurrentRole( PlayerData.ROLE_KING );
+                mController.setCurrentRole( Constants.ROLE_KING );
             }
             else
             {
-                mController.setCurrentRole( PlayerData.ROLE_PIRATE );
+                mController.setCurrentRole( Constants.ROLE_PIRATE );
             }
 
             System.out.println( "role selected : " + mController.getCurrentRole() );

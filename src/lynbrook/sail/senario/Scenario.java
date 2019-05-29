@@ -34,4 +34,16 @@ public abstract class Scenario
 
 
     public abstract void handleMouseClicked( MouseEvent e );
+
+
+    public void handleMousePressed( MouseEvent e )
+    {
+
+    }
+
+
+    public void handleMouseReleased( MouseEvent e )
+    {
+
+    }
 }

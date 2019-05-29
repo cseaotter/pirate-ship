@@ -5,18 +5,17 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.TreeMap;
 
-import lynbrook.sail.actor.Item;
+import lynbrook.sail.actor.King;
+import lynbrook.sail.actor.Pirate;
 import lynbrook.sail.actor.Player;
 import lynbrook.sail.controller.GameController;
 import lynbrook.sail.data.Constants;
 import lynbrook.sail.data.PathOfMoving;
 import lynbrook.sail.gui.IslandMap;
-import lynbrook.sail.gui.MapImage;
 import lynbrook.sail.network.PlayerData;
 
 
@@ -33,27 +32,32 @@ public class IslandScenario extends Scenario
 
     private IslandMap mMap;
 
-    private ArrayList<Item> mItems;
-
     private LinkedList<Point> mPath;
 
 
     private void init()
     {
 
-        mItems = new ArrayList<Item>();
+        int role = mController.getCurrentRole();
         mMap = new IslandMap( Constants.ITEM_DIMENTION );
-        mMap.loadIcons( Constants.RESOURCE_ISLAND_SCENARIO_MAP_ICONS );
         mMap.loadMap( Constants.RESOURCE_ISLAND_SCENARIO_MAP );
-        mMap.loadCastleMap( Constants.RESOURCE_ISLAND_SCENARIO_CASTLE_MAP );
+        mMap.loadCastleMap( Constants.RESOURCE_ISLAND_SCENARIO_CASTLE_MAP,
+            Constants.RESOURCE_ISLAND_SCENARIO_CASTLE );
 
         mPath = new LinkedList<>();
         mPlayers = new TreeMap<>();
 
-        Player currentPlayer = new Player( mMap );
-        currentPlayer.setTilePosition( Constants.PLAYER_INITIAL_POSITION,
-            Constants.PLAYER_INITIAL_POSITION );
-        mPlayers.put( mController.getCurrentRole(), currentPlayer );
+        Player currentPlayer;
+        if ( role == Constants.ROLE_KING )
+        {
+            currentPlayer = new King( mMap );
+        }
+        else
+        {
+            currentPlayer = new Pirate( mMap );
+        }
+
+        mPlayers.put( role, currentPlayer );
     }
 
 
@@ -73,10 +77,17 @@ public class IslandScenario extends Scenario
             Point point = data.getPoit();
             if ( !mPlayers.containsKey( remoteRole() ) )
             {
-                mPlayers.put( remoteRole(), new Player( mMap ) );
+                mPlayers.put( remoteRole(), new Player( mMap, mController.getCurrentRole() ) );
             }
             Player remotePlayer = mPlayers.get( remoteRole() );
             remotePlayer.setTilePosition( point.x, point.y );
+        }
+
+        Point p = getCurrentPlayer().getPosition();
+        int role = mController.getCurrentRole();
+        if ( role == Constants.ROLE_PIRATE && mMap.getIndex( p.y, p.x ) == Constants.CASTLE )
+        {
+            mController.switchScenario( Constants.SCENARIO_BATTLE_FIELD );
         }
     }
 
@@ -89,10 +100,6 @@ public class IslandScenario extends Scenario
         if ( mPlayers.containsKey( remoteRole() ) )
         {
             getRemotePlayer().draw( g );
-        }
-        for ( Item i : mItems )
-        {
-            i.draw( g );
         }
 
         g.setColor( Color.BLACK );
@@ -160,7 +167,9 @@ public class IslandScenario extends Scenario
             return;
         }
         Point to = getCurrentPlayer().toPosition( e.getX(), e.getY() );
-
+        int[][] map = mMap.getMap();
+        System.out
+            .println( "player position: " + to.toString() + ", map value = " + map[to.y][to.x] );
         PathOfMoving result = findPath( to );
         if ( result != null )
         {
@@ -182,7 +191,7 @@ public class IslandScenario extends Scenario
 
     private PathOfMoving findPath( Point fromPoint )
     {
-        if ( mMap.getType( fromPoint.y, fromPoint.x ) == MapImage.BLOCKED )
+        if ( isBlocked( fromPoint ) )
         {
             return null;
         }
@@ -209,8 +218,7 @@ public class IslandScenario extends Scenario
                 Point next = new Point( p.getPoint() );
 
                 next.translate( m[0], m[1] );
-                if ( inside( map, next ) && !visited[next.y][next.x]
-                    && mMap.getType( next.y, next.x ) != MapImage.BLOCKED )
+                if ( inside( map, next ) && !visited[next.y][next.x] && !isBlocked( next ) )
                 {
                     q.add( new PathOfMoving( next, p ) );
                     visited[next.y][next.x] = true;
@@ -220,6 +228,12 @@ public class IslandScenario extends Scenario
         }
 
         return result;
+    }
+
+
+    private boolean isBlocked( Point point )
+    {
+        return mMap.isBlocked( mController.getCurrentRole(), point.x, point.y );
     }
 
 

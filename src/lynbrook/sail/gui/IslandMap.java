@@ -13,7 +13,6 @@ import lynbrook.sail.data.Constants;
 
 public class IslandMap
 {
-
     // position
     private int x;
 
@@ -47,73 +46,24 @@ public class IslandMap
 
     private int mHeight;
 
-    private BufferedImage images;
+    private BufferedImage mIsland;
 
-    private BufferedImage mCastleMap;
-
-    private int numItemPerRow;
-
-    private MapImage[][] mIcons;
-
-    // drawing
-    private int rowOffset;
-
-    private int colOffset;
-
-    private int numRowsToDraw;
-
-    private int numColsToDraw;
+    private BufferedImage mCastle;
 
 
     public IslandMap( int itemSize )
     {
         this.itemSize = itemSize;
-        numRowsToDraw = Constants.HEIGHT / itemSize + 2;
-        numColsToDraw = Constants.WIDTH / itemSize + 2;
         speed = 4;
     }
 
 
-    public void loadIcons( String s )
-    {
-
-        try
-        {
-
-            images = ImageIO.read( getClass().getResourceAsStream( s ) );
-            numItemPerRow = images.getWidth() / itemSize;
-            mIcons = new MapImage[2][numItemPerRow];
-
-            BufferedImage subimage;
-            for ( int col = 0; col < numItemPerRow; col++ )
-            {
-                subimage = images.getSubimage( col * itemSize, 0, itemSize, itemSize );
-                mIcons[0][col] = new MapImage( subimage, MapImage.BLOCKED );
-                subimage = images.getSubimage( col * itemSize, itemSize, itemSize, itemSize );
-                mIcons[1][col] = new MapImage( subimage, MapImage.BLOCKED );
-            }
-            // meadow;
-            mIcons[0][2].setType( MapImage.NORMAL );
-            // Crown
-            mIcons[0][3].setType( MapImage.NORMAL );
-            // castle
-            mIcons[1][2].setType( MapImage.NORMAL );
-
-        }
-        catch ( Exception e )
-        {
-            e.printStackTrace();
-        }
-
-    }
-
-
-    public void loadCastleMap( String s )
+    public void loadCastleMap( String island, String castle )
     {
         try
         {
-            mCastleMap = ImageIO.read( getClass().getResourceAsStream( s ) );
-
+            mIsland = ImageIO.read( getClass().getResourceAsStream( island ) );
+            mCastle = ImageIO.read( getClass().getResourceAsStream( castle ) );
         }
         catch ( Exception e )
         {
@@ -127,7 +77,6 @@ public class IslandMap
 
         try
         {
-
             InputStream in = getClass().getResourceAsStream( s );
             BufferedReader br = new BufferedReader( new InputStreamReader( in ) );
 
@@ -198,12 +147,22 @@ public class IslandMap
     }
 
 
-    public int getType( int row, int col )
+    public boolean isBlocked( int role, int x, int y )
     {
-        int rc = mMap[row][col];
-        int r = rc / numItemPerRow;
-        int c = rc % numItemPerRow;
-        return mIcons[r][c].getType();
+        int rc = mMap[y][x];
+        if ( rc == Constants.MIXED || rc == Constants.CASTLE )
+        {
+            return false;
+        }
+
+        if ( role == Constants.ROLE_KING )
+        {
+            return rc != Constants.LAND;
+        }
+        else
+        {
+            return rc != Constants.WATER;
+        }
     }
 
 
@@ -213,33 +172,7 @@ public class IslandMap
     }
 
 
-    public void setTile( int row, int col, int index )
-    {
-        mMap[row][col] = index;
-    }
-
-
-    public void replace( int x, int y )
-    {
-        for ( int row = 0; row < mMapRows; row++ )
-        {
-            for ( int col = 0; col < mMapCols; col++ )
-            {
-                if ( mMap[row][col] == x )
-                    mMap[row][col] = y;
-            }
-        }
-    }
-
-
-    public void setPosition( int x, int y )
-    {
-        xDest = x;
-        yDest = y;
-    }
-
-
-    public void checkBound()
+    private void checkBound()
     {
         if ( x < xMin )
         {
@@ -297,45 +230,13 @@ public class IslandMap
 
         checkBound();
 
-        colOffset = -this.x / itemSize;
-        rowOffset = -this.y / itemSize;
-
-    }
-
-
-    public void drawCastle( Graphics2D g )
-    {
-        g.drawImage( mCastleMap, 0, 0, null );
     }
 
 
     public void draw( Graphics2D g )
     {
-        for ( int row = rowOffset; row < rowOffset + numRowsToDraw; row++ )
-        {
-
-            if ( row >= mMapRows )
-                break;
-
-            for ( int col = colOffset; col < colOffset + numColsToDraw; col++ )
-            {
-
-                if ( col >= mMapCols )
-                    break;
-
-                int rc = mMap[row][col];
-                int r = rc / numItemPerRow;
-                int c = rc % numItemPerRow;
-
-                g.drawImage( mIcons[r][c].getImage(),
-                    x + col * itemSize,
-                    y + row * itemSize,
-                    null );
-
-            }
-
-        }
-
+        g.drawImage( mIsland, 0, 0, null );
+        g.drawImage( mCastle, 540, 254, null );
     }
 
 }

@@ -2,6 +2,34 @@ package lynbrook.sail.data;
 
 public class Constants
 {
+    public static final int SCENARIO_BEGIN = 0;
+
+    public static final int SCENARIO_ISLAND = 1;
+
+    public static final int SCENARIO_BATTLE_FIELD = 2;
+
+    public static final int SCENARIO_RESULT = 3;
+
+    public static final int DOWN = 2;
+
+    public static final int LEFT = 1;
+
+    public static final int RIGHT = 3;
+
+    public static final int UP = 0;
+
+    public static final int WATER = 0;
+
+    public static final int LAND = 1;
+
+    public static final int MIXED = 8;
+
+    public static final int CASTLE = 9;
+
+    public static final int ROLE_KING = 0;
+
+    public static final int ROLE_PIRATE = 1;
+
     public static final int ITEM_DIMENTION = 32;
 
     public static final int PLAYER_DIMENTION = 32;
@@ -28,16 +56,33 @@ public class Constants
 
     public static final int PIRATE_VS_KING_PORT = 3456;
 
-    // the server's ip address for the pirate to connect. the pirate needs to temporarily change this.
+    // the server's ip address for the pirate to connect. the pirate needs to
+    // temporarily change this.
     public static final String PIRATE_VS_KING_IP_ADDRESS = "192.168.0.73";
 
     public static final String RESOURCE_ISLAND_SCENARIO_MAP = "/island_map.txt";
 
     public static final String RESOURCE_FRONT_PAGE_SCENARIO = "/front_page.png";
 
+    public static final String RESOURCE_KING = "/king.png";
+
+    public static final String RESOURCE_PIRATE = "/pirate.png";
+
+    public static final String RESOURCE_BOAT = "/boat.png";
+
+    public static final String RESOURCE_WATER = "/ocean_water.png";
+
+    public static final String RESOURCE_CASTLE_WALL = "/castle_wall.png";
+
     public static final String RESOURCE_INSTRUCTION_PAGE_SCENARIO = "/instruction_page.png";
 
     public static final String RESOURCE_ISLAND_SCENARIO_MAP_ICONS = "/map_icons.jpg";
 
-    public static final String RESOURCE_ISLAND_SCENARIO_CASTLE_MAP = "/castle_map.jpg";
+    public static final String RESOURCE_ISLAND_SCENARIO_CASTLE = "/castle_land.png";
+
+    public static final String RESOURCE_ISLAND_SCENARIO_CASTLE_MAP = "/island_map.jpg";
+
+    public static final String RESOURCE_RESULT_WON = "/won.png";
+
+    public static final String RESOURCE_RESULT_LOST = "/lost.png";
 }

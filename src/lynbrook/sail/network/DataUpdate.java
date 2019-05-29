@@ -1,9 +1,7 @@
-package lynbrook.sail.backend;
+package lynbrook.sail.network;
 
 import java.awt.Point;
 import java.util.Map;
-
-import lynbrook.sail.network.PlayerData;
 
 
 public interface DataUpdate

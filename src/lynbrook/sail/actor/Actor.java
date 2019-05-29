@@ -2,8 +2,7 @@ package lynbrook.sail.actor;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
-
-import lynbrook.sail.gui.MapImage;
+import lynbrook.sail.data.PlayerImage;
 import lynbrook.sail.gui.IslandMap;
 
 
@@ -28,7 +27,7 @@ public abstract class Actor
     protected int colTile;
 
     // movement
-    protected boolean moving;
+    protected boolean isMoving;
 
     protected boolean left;
 
@@ -45,21 +44,17 @@ public abstract class Actor
 
     protected int itemSize;
 
-    protected int xmap;
+    protected int role;
 
-    protected int ymap;
-
-    // animation
-    protected Animation mAnimation;
-
-    protected int mCurrentAnimation;
+    protected PlayerImage playerImage;
 
 
-    public Actor( IslandMap map )
+    public Actor( IslandMap map, int role )
     {
         mMap = map;
         itemSize = mMap.getTileSize();
-        mAnimation = new Animation();
+        this.role = role;
+        playerImage = new PlayerImage( role );
     }
 
 
@@ -69,13 +64,6 @@ public abstract class Actor
         y = i2;
         xdest = x;
         ydest = y;
-    }
-
-
-    public void setMapPosition()
-    {
-        xmap = mMap.getx();
-        ymap = mMap.gety();
     }
 
 
@@ -90,37 +78,45 @@ public abstract class Actor
 
     public void setLeft()
     {
-        if ( moving )
+        if ( isMoving )
+        {
             return;
+        }
         left = true;
-        moving = validateNextPosition();
+        isMoving = checkNextPosition();
     }
 
 
     public void setRight()
     {
-        if ( moving )
+        if ( isMoving )
+        {
             return;
+        }
         right = true;
-        moving = validateNextPosition();
+        isMoving = checkNextPosition();
     }
 
 
     public void setUp()
     {
-        if ( moving )
+        if ( isMoving )
+        {
             return;
+        }
         up = true;
-        moving = validateNextPosition();
+        isMoving = checkNextPosition();
     }
 
 
     public void setDown()
     {
-        if ( moving )
+        if ( isMoving )
+        {
             return;
+        }
         down = true;
-        moving = validateNextPosition();
+        isMoving = checkNextPosition();
     }
 
 
@@ -136,18 +132,20 @@ public abstract class Actor
     }
 
 
-    private boolean validateNextPosition()
+    private boolean checkNextPosition()
     {
 
-        if ( moving )
+        if ( isMoving )
+        {
             return true;
+        }
 
         rowTile = y / itemSize;
         colTile = x / itemSize;
 
         if ( left )
         {
-            if ( colTile == 0 || mMap.getType( rowTile, colTile - 1 ) == MapImage.BLOCKED )
+            if ( colTile == 0 || mMap.isBlocked( role, colTile - 1, rowTile ) )
             {
                 return false;
             }
@@ -156,10 +154,10 @@ public abstract class Actor
                 xdest = x - itemSize;
             }
         }
+
         if ( right )
         {
-            if ( colTile == mMap.getNumCols()
-                || mMap.getType( rowTile, colTile + 1 ) == MapImage.BLOCKED )
+            if ( colTile == mMap.getNumCols() || mMap.isBlocked( role, colTile + 1, rowTile ) )
             {
                 return false;
             }
@@ -168,9 +166,10 @@ public abstract class Actor
                 xdest = x + itemSize;
             }
         }
+
         if ( up )
         {
-            if ( rowTile == 0 || mMap.getType( rowTile - 1, colTile ) == MapImage.BLOCKED )
+            if ( rowTile == 0 || mMap.isBlocked( role, colTile, rowTile - 1 ) )
             {
                 return false;
             }
@@ -179,10 +178,10 @@ public abstract class Actor
                 ydest = y - itemSize;
             }
         }
+
         if ( down )
         {
-            if ( rowTile == mMap.getNumRows() - 1
-                || mMap.getType( rowTile + 1, colTile ) == MapImage.BLOCKED )
+            if ( rowTile == mMap.getNumRows() - 1 || mMap.isBlocked( role, colTile, rowTile + 1 ) )
             {
                 return false;
             }
@@ -201,80 +200,109 @@ public abstract class Actor
     {
 
         if ( left && x > xdest )
+        {
             x -= moveSpeed;
+        }
         else
+        {
             left = false;
+        }
         if ( left && x < xdest )
+        {
             x = xdest;
+        }
 
         if ( right && x < xdest )
+        {
             x += moveSpeed;
+        }
         else
+        {
             right = false;
+        }
         if ( right && x > xdest )
+        {
             x = xdest;
+        }
 
         if ( up && y > ydest )
+        {
             y -= moveSpeed;
+        }
         else
+        {
             up = false;
+        }
         if ( up && y < ydest )
+        {
             y = ydest;
+        }
 
         if ( down && y < ydest )
+        {
             y += moveSpeed;
+        }
         else
+        {
             down = false;
+        }
         if ( down && y > ydest )
+        {
             y = ydest;
+        }
 
     }
 
 
     public void update()
     {
-        if ( moving )
+        if ( isMoving )
+        {
             getNextPosition();
+        }
 
         if ( x == xdest && y == ydest )
         {
-            left = right = up = down = moving = false;
+            left = right = up = down = isMoving = false;
             rowTile = y / itemSize;
             colTile = x / itemSize;
         }
-
-        mAnimation.update();
 
     }
 
 
     public void draw( Graphics2D g )
     {
-        g.drawImage( mAnimation.getImage(), x + xmap - width / 2, y + ymap - height / 2, null );
+        g.drawImage( playerImage.getCurrentImage(), x - width / 2, y - height / 2, null );
     }
-    
+
+
     public boolean getMoving()
     {
-    	return moving;
+        return isMoving;
     }
-    
+
+
     public boolean getLeft()
     {
-    	return left;
+        return left;
     }
-    
+
+
     public boolean getRight()
     {
-    	return right;
+        return right;
     }
-    
+
+
     public boolean getUp()
     {
-    	return up;
+        return up;
     }
-    
+
+
     public boolean getDown()
     {
-    	return down;
+        return down;
     }
 }

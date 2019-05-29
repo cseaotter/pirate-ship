@@ -3,8 +3,6 @@ package lynbrook.sail.gui;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 import lynbrook.sail.controller.GameController;
@@ -35,7 +33,7 @@ public class GamePanel extends JPanel implements Runnable
     }
 
 
-    /** 
+    /**
      * display the component on the screen
      */
     @Override
@@ -60,31 +58,35 @@ public class GamePanel extends JPanel implements Runnable
     public void run()
     {
         long start;
-        long elapsed;
-        long wait;
 
         while ( mThreadRunning )
         {
 
-            start = System.nanoTime();
+            start = System.currentTimeMillis();
             update();
-            elapsed = System.nanoTime() - start;
-
-            wait = Constants.TARGET_TIME - elapsed / 1000000;
-            if ( wait < 0 )
-                wait = Constants.TARGET_TIME;
-
-            try
-            {
-                Thread.sleep( wait );
-            }
-            catch ( Exception e )
-            {
-                e.printStackTrace();
-            }
-
+            waitIfNecessary( start );
         }
 
+    }
+
+
+    private void waitIfNecessary( long start )
+    {
+
+        long elapsed = System.currentTimeMillis() - start;
+
+        long wait = Constants.TARGET_TIME - elapsed / 1000;
+        if ( wait < 0 )
+            wait = Constants.TARGET_TIME;
+
+        try
+        {
+            Thread.sleep( wait );
+        }
+        catch ( Exception e )
+        {
+
+        }
     }
 
 

@@ -3,17 +3,11 @@ package lynbrook.sail.network;
 import java.awt.Point;
 import java.io.Serializable;
 
+import lynbrook.sail.data.Constants;
+
 
 public class PlayerData implements Serializable
 {
-    /**
-     * 
-     */
-
-    public static final int ROLE_KING = 0;
-
-    public static final int ROLE_PIRATE = 1;
-
     private static final long serialVersionUID = 1L;
 
     private int x;
@@ -29,7 +23,7 @@ public class PlayerData implements Serializable
     {
 
         name = "";
-        role = ROLE_KING;
+        role = Constants.ROLE_KING;
     }
 
 
