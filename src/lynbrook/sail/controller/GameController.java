@@ -17,170 +17,153 @@ import lynbrook.sail.data.Constants;
 import lynbrook.sail.senario.BeginningPage;
 import lynbrook.sail.senario.IslandScenario;
 
-
 public class GameController extends KeyAdapter implements MouseListener, DataUpdate
 {
-    public static final int SCENARIO_BEGIN = 0;
+	public static final int SCENARIO_BEGIN = 0;
 
-    public static final int SCENARIO_ISLAND = 1;
+	public static final int SCENARIO_ISLAND = 1;
 
-    private Map<Integer, Boolean> mKeyEventMap;
+	private Map<Integer, Boolean> mKeyEventMap;
 
-    private Map<Integer, PlayerData> mPlayerDataMap;
+	private Map<Integer, PlayerData> mPlayerDataMap;
 
-    private Scenario mScenario;
+	private Scenario mScenario;
 
-    private int role;
+	private int role;
 
+	public GameController()
+	{
+		mKeyEventMap = new TreeMap<>();
+		mPlayerDataMap = new TreeMap<>();
+		role = PlayerData.ROLE_KING;
+		switchScenario(SCENARIO_BEGIN);
+	}
 
-    public GameController()
-    {
-        mKeyEventMap = new TreeMap<>();
-        mPlayerDataMap = new TreeMap<>();
-        role = PlayerData.ROLE_KING;
-        switchScenario( SCENARIO_BEGIN );
-    }
+	public Map<Integer, PlayerData> getPlayerDataMap()
+	{
+		return mPlayerDataMap;
+	}
 
+	public void setCurrentRole(int role)
+	{
+		this.role = role;
+	}
 
-    public Map<Integer, PlayerData> getPlayerDataMap()
-    {
-        return mPlayerDataMap;
-    }
+	public int getCurrentRole()
+	{
+		return role;
+	}
 
+	public void switchScenario(int scenario)
+	{
 
-    public void setCurrentRole( int role )
-    {
-        this.role = role;
-    }
+		if (mScenario != null)
+		{
+			mScenario = null;
+		}
 
+		switch (scenario)
+		{
+		case SCENARIO_BEGIN: // beginning page
+			mScenario = new BeginningPage(this);
+			break;
+		case SCENARIO_ISLAND: // map
+			System.out.println("current role = " + role);
+			mScenario = new IslandScenario(this);
+			Thread messageThread = new Thread(new MessageRunnable(role, Constants.PIRATE_VS_KING_IP_ADDRESS, this));
+			messageThread.start();
+			break;
+		// to do: fighting scenario
+		}
 
-    public int getCurrentRole()
-    {
-        return role;
-    }
+	}
 
+	public void update()
+	{
+		if (mScenario != null)
+		{
+			mScenario.update();
+		}
+	}
 
-    public void switchScenario( int scenario )
-    {
+	public void draw(Graphics2D g)
+	{
+		if (mScenario != null)
+		{
+			mScenario.draw(g);
+		}
+	}
 
-        if ( mScenario != null )
-        {
-            mScenario = null;
-        }
+	@Override
+	public void keyPressed(KeyEvent key)
+	{
+		mKeyEventMap.put(key.getKeyCode(), true);
+	}
 
-        switch ( scenario )
-        {
-            case SCENARIO_BEGIN: // story line
-                mScenario = new BeginningPage( this );
-                break;
-            case SCENARIO_ISLAND: // map
-                System.out.println( "current role = " + role );
-                mScenario = new IslandScenario( this );
-                Thread messageThread = new Thread(
-                    new MessageRunnable( role, Constants.PIRATE_VS_KING_IP_ADDRESS, this ) );
-                messageThread.start();
-                break;
-            // to do: fighting scenario
-        }
+	@Override
+	public void keyReleased(KeyEvent key)
+	{
+		mKeyEventMap.put(key.getKeyCode(), false);
+	}
 
-    }
+	public boolean isDown(int keyCode)
+	{
+		return mKeyEventMap.containsKey(keyCode) && mKeyEventMap.get(keyCode);
+	}
 
+	@Override
+	public void mouseClicked(MouseEvent e)
+	{
+		// TODO Auto-generated method stub
+		if (mScenario != null)
+		{
+			mScenario.handleMouseClicked(e);
+		}
 
-    public void update()
-    {
-        if ( mScenario != null )
-        {
-            mScenario.update();
-        }
-    }
+	}
 
+	@Override
+	public void mousePressed(MouseEvent e)
+	{
+		// TODO Auto-generated method stub
+	}
 
-    public void draw( Graphics2D g )
-    {
-        if ( mScenario != null )
-        {
-            mScenario.draw( g );
-        }
-    }
+	@Override
+	public void mouseReleased(MouseEvent e)
+	{
+		// TODO Auto-generated method stub
 
+	}
 
-    public void keyPressed( KeyEvent key )
-    {
-        mKeyEventMap.put( key.getKeyCode(), true );
-    }
+	@Override
+	public void mouseEntered(MouseEvent e)
+	{
+		// TODO Auto-generated method stub
 
+	}
 
-    public void keyReleased( KeyEvent key )
-    {
-        mKeyEventMap.put( key.getKeyCode(), false );
-    }
+	@Override
+	public void mouseExited(MouseEvent e)
+	{
+		// TODO Auto-generated method stub
+	}
 
+	@Override
+	public void onUpdateData(Map<Integer, PlayerData> playerMap)
+	{
+		// TODO Auto-generated method stub
+		for (Map.Entry<Integer, PlayerData> entry : playerMap.entrySet())
+		{
 
-    public boolean isDown( int keyCode )
-    {
-        return mKeyEventMap.containsKey( keyCode ) && mKeyEventMap.get( keyCode );
-    }
+			mPlayerDataMap.put(entry.getKey(), entry.getValue());
+		}
 
+	}
 
-    @Override
-    public void mouseClicked( MouseEvent e )
-    {
-        // TODO Auto-generated method stub
-        if ( mScenario != null )
-        {
-            mScenario.handleMouseClicked( e );
-        }
-
-    }
-
-
-    @Override
-    public void mousePressed( MouseEvent e )
-    {
-        // TODO Auto-generated method stub
-    }
-
-
-    @Override
-    public void mouseReleased( MouseEvent e )
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-
-    @Override
-    public void mouseEntered( MouseEvent e )
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-
-    @Override
-    public void mouseExited( MouseEvent e )
-    {
-        // TODO Auto-generated method stub
-    }
-
-
-    @Override
-    public void onUpdateData( Map<Integer, PlayerData> playerMap )
-    {
-        // TODO Auto-generated method stub
-        for ( Map.Entry<Integer, PlayerData> entry : playerMap.entrySet() )
-        {
-
-            mPlayerDataMap.put( entry.getKey(), entry.getValue() );
-        }
-
-    }
-
-
-    @Override
-    public Point getCurrentLocation()
-    {
-        return mScenario != null ? mScenario.getCurrentPlayer().getPosition() : null;
-    }
+	@Override
+	public Point getCurrentLocation()
+	{
+		return mScenario != null ? mScenario.getCurrentPlayer().getPosition() : null;
+	}
 
 }

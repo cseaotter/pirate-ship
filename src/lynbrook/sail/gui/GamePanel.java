@@ -35,6 +35,10 @@ public class GamePanel extends JPanel implements Runnable
     }
 
 
+    /** 
+     * display the component on the screen
+     */
+    @Override
     public void addNotify()
     {
         super.addNotify();

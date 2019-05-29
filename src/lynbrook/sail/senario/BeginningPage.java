@@ -29,6 +29,7 @@ public class BeginningPage extends Scenario
     {
         try
         {
+        	// put all the images as constants
             mFrontPage = ImageIO
                 .read( getClass().getResourceAsStream( Constants.RESOURCE_FRONT_PAGE_SCENARIO ) );
 

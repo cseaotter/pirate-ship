@@ -1,0 +1,32 @@
+@startuml
+participant GamePanel
+
+
+GamePanel -> GameController: addNotify
+activate GameController
+activate Scenario
+
+
+GamePanel -> GameThread: 
+activate GameThread
+
+group run
+
+GameThread -> GameController: update
+GameController -> Scenario: update
+
+GameThread -> GameController: draw
+GameController -> Scenario: draw
+
+GameThread->GameThread: drawGraphics
+end
+
+
+GameController -> NetworkThread:
+activate NetworkThread
+
+NetworkThread -> GameController: onUpdateData
+
+
+
+@enduml
