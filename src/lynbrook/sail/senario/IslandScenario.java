@@ -12,12 +12,12 @@ import java.util.TreeMap;
 
 import lynbrook.sail.actor.Item;
 import lynbrook.sail.actor.Player;
-import lynbrook.sail.backend.PlayerData;
 import lynbrook.sail.controller.GameController;
 import lynbrook.sail.data.Constants;
 import lynbrook.sail.data.PathOfMoving;
 import lynbrook.sail.gui.IslandMap;
 import lynbrook.sail.gui.MapImage;
+import lynbrook.sail.network.PlayerData;
 
 
 public class IslandScenario extends Scenario

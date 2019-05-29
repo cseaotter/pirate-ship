@@ -1,4 +1,4 @@
-package lynbrook.sail.backend;
+package lynbrook.sail.network;
 
 import java.awt.Point;
 import java.io.Serializable;

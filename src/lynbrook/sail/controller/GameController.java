@@ -11,9 +11,9 @@ import java.util.TreeMap;
 
 import lynbrook.sail.senario.Scenario;
 import lynbrook.sail.backend.DataUpdate;
-import lynbrook.sail.backend.MessageRunnable;
-import lynbrook.sail.backend.PlayerData;
 import lynbrook.sail.data.Constants;
+import lynbrook.sail.network.MessageRunnable;
+import lynbrook.sail.network.PlayerData;
 import lynbrook.sail.senario.BeginningPage;
 import lynbrook.sail.senario.IslandScenario;
 

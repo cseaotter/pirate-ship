@@ -6,9 +6,9 @@ import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
 
-import lynbrook.sail.backend.PlayerData;
 import lynbrook.sail.controller.GameController;
 import lynbrook.sail.data.Constants;
+import lynbrook.sail.network.PlayerData;
 
 
 public class BeginningPage extends Scenario

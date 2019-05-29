@@ -1,4 +1,4 @@
-package lynbrook.sail.backend;
+package lynbrook.sail.network;
 
 import java.awt.Point;
 import java.io.IOException;
@@ -10,6 +10,7 @@ import java.net.SocketException;
 import java.util.Map;
 import java.util.TreeMap;
 
+import lynbrook.sail.backend.DataUpdate;
 import lynbrook.sail.data.Constants;
 
 public class MessageRunnable implements Runnable
