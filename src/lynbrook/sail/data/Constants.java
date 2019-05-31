@@ -60,7 +60,7 @@ public class Constants
 
     // the server's ip address for the pirate to connect. the pirate needs to
     // temporarily change this.
-    public static final String PIRATE_VS_KING_IP_ADDRESS = "192.168.0.73";
+    public static final String PIRATE_VS_KING_IP_ADDRESS = "192.168.0.76";
 
     public static final String RESOURCE_ISLAND_SCENARIO_MAP = "/island_map.txt";
 

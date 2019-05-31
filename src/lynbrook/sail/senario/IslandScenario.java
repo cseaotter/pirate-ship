@@ -3,7 +3,6 @@ package lynbrook.sail.senario;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 import java.util.Map;
@@ -72,7 +71,7 @@ public class IslandScenario extends Scenario
         if ( mController.getPlayerDataMap().size() == 2 )
         {
             PlayerData data = mController.getPlayerDataMap().get( remoteRole() );
-            Point point = data.getPoit();
+            Point point = data.getPoint();
             if ( !mPlayers.containsKey( remoteRole() ) )
             {
                 mPlayers.put( remoteRole(), new Player( mMap, remoteRole() ) );
