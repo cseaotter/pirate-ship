@@ -28,7 +28,6 @@ public class BeginningPage extends Scenario
     {
         try
         {
-        	// put all the images as constants
             mFrontPage = ImageIO
                 .read( getClass().getResourceAsStream( Constants.RESOURCE_FRONT_PAGE_SCENARIO ) );
 
@@ -46,7 +45,6 @@ public class BeginningPage extends Scenario
     @Override
     public void update()
     {
-        // TODO Auto-generated method stub
 
     }
 
@@ -54,7 +52,6 @@ public class BeginningPage extends Scenario
     @Override
     public void draw( Graphics2D g )
     {
-        // TODO Auto-generated method stub
         g.drawImage( mFrontPage, 0, 0, Constants.WIDTH, Constants.HEIGHT, null );
     }
 
@@ -62,7 +59,6 @@ public class BeginningPage extends Scenario
     @Override
     public void handleKeyEvents()
     {
-        // TODO Auto-generated method stub
 
     }
 
@@ -70,14 +66,12 @@ public class BeginningPage extends Scenario
     @Override
     public void handleMouseClicked( MouseEvent e )
     {
-        // TODO Auto-generated method stub
         if ( mFrontPage.equals( mInstructionPage ) )
         {
             mController.switchScenario( Constants.SCENARIO_ISLAND );
         }
         else
         {
-            // TODO:
             if ( e.getX() >= 640 )
             {
                 mController.setCurrentRole( Constants.ROLE_KING );
@@ -87,7 +81,6 @@ public class BeginningPage extends Scenario
                 mController.setCurrentRole( Constants.ROLE_PIRATE );
             }
 
-            System.out.println( "role selected : " + mController.getCurrentRole() );
             mFrontPage = mInstructionPage;
         }
 

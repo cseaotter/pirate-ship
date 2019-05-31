@@ -42,14 +42,12 @@ public class NetworkRunnable implements Runnable
     @Override
     public void run()
     {
-        // TODO Auto-generated method stub
         try
         {
             loop();
         }
         catch ( Exception e )
         {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -74,16 +72,41 @@ public class NetworkRunnable implements Runnable
             initCurrentRoleIfNecessary();
             long start = System.currentTimeMillis();
             ObjectOutputStream sendObj = new ObjectOutputStream( client.getOutputStream() );
-            Point point = dataUpdate.getCurrentLocation();
+
             PlayerData player = playerMap.get( role );
-            player.setPoint( point );
+            int scenario = dataUpdate.getScenario();
+            if ( player != null )
+            {
+
+                player.setScenario( scenario );
+                if ( scenario == Constants.SCENARIO_ISLAND )
+                {
+                    Point point = dataUpdate.getCurrentLocation();
+                    player.setPoint( point );
+                }
+                else if ( scenario >= Constants.SCENARIO_BATTLE_FIELD )
+                {
+                    player.setBattleData( dataUpdate.getBattleData() );
+                }
+            }
             sendObj.writeObject( playerMap.get( role ) );
             sendObj = null;
             ObjectInputStream getObj = new ObjectInputStream( client.getInputStream() );
             PlayerData remotePlayer = (PlayerData)getObj.readObject();
             getObj = null;
-            playerMap.put( remotePlayer.getRole(), remotePlayer );
-            dataUpdate.onUpdateData( playerMap );
+            boolean needUpdate = false;
+            if ( remotePlayer != null )
+            {
+                if ( !remotePlayer.equals( playerMap.get( remotePlayer.getRole() ) ) )
+                {
+                    playerMap.put( remotePlayer.getRole(), remotePlayer );
+                    needUpdate = true;
+                }
+            }
+            if ( needUpdate )
+            {
+                dataUpdate.onUpdateData( playerMap );
+            }
             waitIfNecessary( start );
         }
     }

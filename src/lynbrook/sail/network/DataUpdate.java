@@ -9,5 +9,11 @@ public interface DataUpdate
     Point getCurrentLocation();
 
 
+    BattleData getBattleData();
+
+
+    int getScenario();
+
+
     void onUpdateData( Map<Integer, PlayerData> playerMap );
 }

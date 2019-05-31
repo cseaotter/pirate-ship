@@ -6,11 +6,16 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.InputStream;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+
 import lynbrook.sail.senario.Scenario;
 import lynbrook.sail.data.Constants;
+import lynbrook.sail.network.BattleData;
 import lynbrook.sail.network.DataUpdate;
 import lynbrook.sail.network.NetworkRunnable;
 import lynbrook.sail.network.PlayerData;
@@ -29,17 +34,28 @@ public class GameController extends KeyAdapter implements MouseListener, DataUpd
 
     private Scenario mScenario;
 
+    private Point lastLoc;
+
+    private BattleData lastBattleData;
+
     private int role;
 
+    private int scenario;
+
     private boolean won;
+
+    Thread messageThread;
 
 
     public GameController()
     {
         mKeyEventMap = new TreeMap<>();
         mPlayerDataMap = new TreeMap<>();
+        lastLoc = new Point();
+        lastBattleData = new BattleData();
         role = Constants.ROLE_KING;
-        switchScenario( Constants.SCENARIO_BEGIN );
+        scenario = Constants.SCENARIO_BEGIN;
+        switchScenario( scenario );
     }
 
 
@@ -67,26 +83,41 @@ public class GameController extends KeyAdapter implements MouseListener, DataUpd
     }
 
 
+    public void setResult( boolean won )
+    {
+        this.won = won;
+    }
+
+
     public void switchScenario( int scenario )
     {
 
         if ( mScenario != null )
         {
+            if ( mScenario.getCurrentPlayer() != null )
+            {
+                lastLoc = mScenario.getCurrentPlayer().getPosition();
+            }
+
+            if ( this.scenario == Constants.SCENARIO_BATTLE_FIELD )
+            {
+                lastBattleData.fromWeapon( mScenario.getCurrentWeapon() );
+            }
             mScenario = null;
         }
-
+        this.scenario = scenario;
         switch ( scenario )
         {
+
             case Constants.SCENARIO_BEGIN: // beginning page
                 mScenario = new BeginningPage( this );
                 break;
             case Constants.SCENARIO_ISLAND: // map
                 mScenario = new IslandScenario( this );
-                Thread messageThread = new Thread(
+                messageThread = new Thread(
                     new NetworkRunnable( role, Constants.PIRATE_VS_KING_IP_ADDRESS, this ) );
                 messageThread.start();
                 break;
-            // to do: fighting scenario
             case Constants.SCENARIO_BATTLE_FIELD:
 
                 mScenario = new BattleField( this );
@@ -141,7 +172,6 @@ public class GameController extends KeyAdapter implements MouseListener, DataUpd
     @Override
     public void mouseClicked( MouseEvent e )
     {
-        // TODO Auto-generated method stub
         if ( mScenario != null )
         {
             mScenario.handleMouseClicked( e );
@@ -174,7 +204,6 @@ public class GameController extends KeyAdapter implements MouseListener, DataUpd
     @Override
     public void mouseEntered( MouseEvent e )
     {
-        // TODO Auto-generated method stub
 
     }
 
@@ -182,17 +211,15 @@ public class GameController extends KeyAdapter implements MouseListener, DataUpd
     @Override
     public void mouseExited( MouseEvent e )
     {
-        // TODO Auto-generated method stub
+
     }
 
 
     @Override
     public void onUpdateData( Map<Integer, PlayerData> playerMap )
     {
-        // TODO Auto-generated method stub
         for ( Map.Entry<Integer, PlayerData> entry : playerMap.entrySet() )
         {
-
             mPlayerDataMap.put( entry.getKey(), entry.getValue() );
         }
 
@@ -202,7 +229,41 @@ public class GameController extends KeyAdapter implements MouseListener, DataUpd
     @Override
     public Point getCurrentLocation()
     {
-        return mScenario != null ? mScenario.getCurrentPlayer().getPosition() : null;
+        return mScenario != null ? mScenario.getCurrentPlayer().getPosition() : lastLoc;
     }
 
+
+    @Override
+    public int getScenario()
+    {
+        return scenario;
+    }
+
+
+    @Override
+    public BattleData getBattleData()
+    {
+        BattleData data = new BattleData();
+        if ( mScenario != null )
+        {
+            data.fromWeapon( mScenario.getCurrentWeapon() );
+        }
+
+        return scenario == Constants.SCENARIO_BATTLE_FIELD ? data : lastBattleData;
+    }
+
+
+    public void playBombSound()
+    {
+        try
+        {
+            InputStream is = getClass().getResourceAsStream( Constants.RESOUCE_BOMB_SOUND );
+            Clip clip = AudioSystem.getClip();
+            clip.open( AudioSystem.getAudioInputStream( is ) );
+            clip.start();
+        }
+        catch ( Exception e )
+        {
+        }
+    }
 }

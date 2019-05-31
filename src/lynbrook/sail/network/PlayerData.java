@@ -18,12 +18,17 @@ public class PlayerData implements Serializable
 
     private int role;
 
+    private int scenario;
+
+    private BattleData battleData;
+
 
     public PlayerData()
     {
 
         name = "";
         role = Constants.ROLE_KING;
+        setBattleData( new BattleData() );
     }
 
 
@@ -33,6 +38,18 @@ public class PlayerData implements Serializable
         y = point.y;
         this.name = name;
         this.role = role;
+        setBattleData( new BattleData() );
+    }
+
+
+    public boolean equals( PlayerData o )
+    {
+        if ( o == null )
+        {
+            return false;
+        }
+        return this == o || x == o.x && y == o.y && role == o.role && scenario == o.scenario
+            && battleData.equals( o.battleData );
     }
 
 
@@ -70,6 +87,30 @@ public class PlayerData implements Serializable
     public int getRole()
     {
         return role;
+    }
+
+
+    public BattleData getBattleData()
+    {
+        return battleData;
+    }
+
+
+    public void setBattleData( BattleData battleData )
+    {
+        this.battleData = battleData;
+    }
+
+
+    public int getScenario()
+    {
+        return scenario;
+    }
+
+
+    public void setScenario( int scenario )
+    {
+        this.scenario = scenario;
     }
 
 }

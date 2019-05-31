@@ -26,7 +26,7 @@ public class GamePanel extends JPanel implements Runnable
 
     public GamePanel()
     {
-        setPreferredSize( new Dimension( Constants.WIDTH, Constants.HEIGHT2 ) );
+        setPreferredSize( new Dimension( Constants.WIDTH, Constants.HEIGHT ) );
         setFocusable( true );
         requestFocus();
 
@@ -44,7 +44,7 @@ public class GamePanel extends JPanel implements Runnable
         if ( mGameThread == null )
         {
             mThreadRunning = true;
-            mMemoryImage = new BufferedImage( Constants.WIDTH, Constants.HEIGHT2, 1 );
+            mMemoryImage = new BufferedImage( Constants.WIDTH, Constants.HEIGHT, 1 );
             mMemoryGraphics = (Graphics2D)mMemoryImage.getGraphics();
             mController = new GameController();
             addKeyListener( mController );
@@ -61,7 +61,6 @@ public class GamePanel extends JPanel implements Runnable
 
         while ( mThreadRunning )
         {
-
             start = System.currentTimeMillis();
             update();
             waitIfNecessary( start );
@@ -95,7 +94,7 @@ public class GamePanel extends JPanel implements Runnable
         mController.update();
         mController.draw( mMemoryGraphics );
         Graphics g2 = getGraphics();
-        g2.drawImage( mMemoryImage, 0, 0, Constants.WIDTH, Constants.HEIGHT2, null );
+        g2.drawImage( mMemoryImage, 0, 0, Constants.WIDTH, Constants.HEIGHT, null );
         g2.dispose();
     }
 

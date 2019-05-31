@@ -1,211 +1,159 @@
-
 package lynbrook.sail.actor;
 
-import lynbrook.sail.gui.IslandMap;
+import java.awt.Point;
+import lynbrook.sail.data.Constants;
+import lynbrook.sail.network.BattleData;
 
 
 public class Weapon
 {
-    double xPos, yPos;//
+    private Point loc;
 
-    double xSpeed, ySpeed;
+    private Point bulletLoc;
 
-    double damage;
+    private int health;
 
-    boolean right, up;
+    private int remoteHealth;
 
-    boolean alive = true;
+    private int angle;
 
-    private IslandMap map;
+    private boolean bulletActive;
+
+    private boolean bulletExplosion;
+
+    private int explosionFrame;
 
 
-    public Weapon(
-        IslandMap tm,
-        double pos,
-        double pos2,
-        double speed,
-        double speed2,
-        double damage,
-        boolean right,
-        boolean up )
+    public Weapon( int health )
     {
-        map = tm;
-        xPos = pos;
-        yPos = pos2;
-        xSpeed = speed;
-        ySpeed = speed2;
-        this.damage = damage;
-        this.right = right;
-        this.up = up;
+        setLoc( new Point() );
+        setBulletLoc( new Point() );
+        this.health = health;
+        setAngle( 0 );
+        remoteHealth = -1;
     }
 
 
-    /**
-     * (non-Javadoc)
-     * 
-     * @see name.shabda.spacegame.Artifact#collision(name.shabda.spacegame.Artifact)
-     */
-    /*
-     * public boolean collision(Artifact a) { int safe=5; boolean hasHit=false;
-     * if(xPos-a.getXPos()<safe&&yPos-a.getYPos()<safe) hasHit=true; return
-     * hasHit; }
-     */
-    /**
-     * @return Returns the damage.
-     */
-    public double getDamage()
+    public void update( BattleData data )
     {
-        return damage;
+        health = data.getHealth();
+        angle = data.getAngle();
+        loc = data.getLoc();
+        bulletLoc = data.getBulletLoc();
+        remoteHealth = data.getRemoteHealth();
+        bulletActive = data.isBulletActive();
+        bulletExplosion = data.isBulletExplosion();
+        explosionFrame = data.getExplosionFrame();
     }
 
 
-    /**
-     * @param damage
-     *            The damage to set.
-     */
-    public void setDamage( double damage )
+    public Point getLoc()
     {
-        this.damage = damage;
+        return loc;
     }
 
 
-    /**
-     * @return Returns the right.
-     */
-    public boolean isRight()
+    public void setLoc( Point loc )
     {
-        return right;
+        this.loc = loc;
     }
 
 
-    /**
-     * @param right
-     *            The right to set.
-     */
-    public void setRight( boolean right )
+    public Point getBulletLoc()
     {
-        this.right = right;
+        return bulletLoc;
     }
 
 
-    /**
-     * @return Returns the up.
-     */
-    public boolean isUp()
+    public void setBulletLoc( Point bulletLoc )
     {
-        return up;
+        this.bulletLoc = bulletLoc;
     }
 
 
-    /**
-     * @param up
-     *            The up to set.
-     */
-    public void setUp( boolean up )
+    public int getHealth()
     {
-        this.up = up;
+        return health;
     }
 
 
-    /**
-     * @return Returns the xPos.
-     */
-    public double getXPos()
+    public void setHealth( int health )
     {
-        return xPos;
+        this.health = health;
     }
 
 
-    /**
-     * @param pos
-     *            The xPos to set.
-     */
-    public void setXPos( double pos )
+    public int getAngle()
     {
-        xPos = pos;
+        return angle;
     }
 
 
-    /**
-     * @return Returns the xSpeed.
-     */
-    public double getXSpeed()
+    public void setAngle( int angle )
     {
-        return xSpeed;
+        this.angle = angle;
     }
 
 
-    /**
-     * @param speed
-     *            The xSpeed to set.
-     */
-    public void setXSpeed( double speed )
+    public boolean isBulletActive()
     {
-        xSpeed = speed;
+        return bulletActive;
     }
 
 
-    /**
-     * @return Returns the yPos.
-     */
-    public double getYPos()
+    public void setBulletActive( boolean bulletActive )
     {
-        return yPos;
+        this.bulletActive = bulletActive;
     }
 
 
-    /**
-     * @param pos
-     *            The yPos to set.
-     */
-    public void setYPos( double pos )
+    public void handleKeyEvents( int action )
     {
-        yPos = pos;
-    }
-
-
-    /**
-     * @return Returns the ySpeed.
-     */
-    public double getYSpeed()
-    {
-        return ySpeed;
-    }
-
-
-    /**
-     * @param speed
-     *            The ySpeed to set.
-     */
-    public void setYSpeed( double speed )
-    {
-        ySpeed = speed;
-    }
-
-
-    public void move()
-    {
-        if ( right )
+        if ( action == Constants.UP )
         {
-            xPos += xSpeed;
+            angle -= 5;
         }
-        else if ( !right )
+        if ( action == Constants.DOWN )
         {
-            xPos -= xSpeed;
+            angle += 5;
         }
-        if ( up )
-        {
-            yPos -= ySpeed;
-        }
-        else if ( !up )
-        {
-            yPos -= ySpeed;
-        }
+        angle = ( angle + 360 ) % 360;
     }
 
 
-    public static void main( String[] args )
+    public int getRemoteHealth()
     {
+        return remoteHealth;
+    }
+
+
+    public void setRemoteHealth( int remoteHealth )
+    {
+        this.remoteHealth = remoteHealth;
+    }
+
+
+    public boolean isBulletExplosion()
+    {
+        return bulletExplosion;
+    }
+
+
+    public void setBulletExplosion( boolean bulletExplosion )
+    {
+        this.bulletExplosion = bulletExplosion;
+    }
+
+
+    public int getExplosionFrame()
+    {
+        return explosionFrame;
+    }
+
+
+    public void setExplosionFrame( int explosionFrame )
+    {
+        this.explosionFrame = explosionFrame;
     }
 
 }

@@ -1,7 +1,6 @@
 package lynbrook.sail.senario;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -31,7 +30,6 @@ public class ResultPage extends Scenario
     {
         try
         {
-            // put all the images as constants
             won = ImageIO.read( getClass().getResourceAsStream( Constants.RESOURCE_RESULT_WON ) );
 
             lost = ImageIO.read( getClass().getResourceAsStream( Constants.RESOURCE_RESULT_LOST ) );
@@ -57,6 +55,8 @@ public class ResultPage extends Scenario
         BufferedImage image = mController.getResult() ? won : lost;
         int x = Constants.WIDTH / 2 - image.getWidth() / 2;
         int y = Constants.HEIGHT / 2 - image.getHeight() / 2;
+        g.setColor( Color.BLACK );
+        g.fillRect( 0, 0, Constants.WIDTH, Constants.HEIGHT );
         g.drawImage( image, x, y, null );
     }
 

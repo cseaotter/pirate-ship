@@ -77,7 +77,7 @@ public class IslandScenario extends Scenario
             Point point = data.getPoit();
             if ( !mPlayers.containsKey( remoteRole() ) )
             {
-                mPlayers.put( remoteRole(), new Player( mMap, mController.getCurrentRole() ) );
+                mPlayers.put( remoteRole(), new Player( mMap, remoteRole() ) );
             }
             Player remotePlayer = mPlayers.get( remoteRole() );
             remotePlayer.setTilePosition( point.x, point.y );
@@ -89,6 +89,20 @@ public class IslandScenario extends Scenario
         {
             mController.switchScenario( Constants.SCENARIO_BATTLE_FIELD );
         }
+        Player remotePlayer = getRemotePlayer();
+        if ( remotePlayer != null )
+        {
+            Point p1 = remotePlayer.getPosition();
+            PlayerData data = mController.getPlayerDataMap().get( remoteRole() );
+            if ( remoteRole() == Constants.ROLE_PIRATE
+                && mMap.getIndex( p1.y, p1.x ) == Constants.CASTLE
+                || data.getScenario() == Constants.SCENARIO_BATTLE_FIELD )
+            {
+                mController.switchScenario( Constants.SCENARIO_BATTLE_FIELD );
+            }
+
+        }
+
     }
 
 
@@ -167,9 +181,6 @@ public class IslandScenario extends Scenario
             return;
         }
         Point to = getCurrentPlayer().toPosition( e.getX(), e.getY() );
-        int[][] map = mMap.getMap();
-        System.out
-            .println( "player position: " + to.toString() + ", map value = " + map[to.y][to.x] );
         PathOfMoving result = findPath( to );
         if ( result != null )
         {

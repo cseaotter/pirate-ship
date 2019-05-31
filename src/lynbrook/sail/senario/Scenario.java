@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 
 import lynbrook.sail.actor.Player;
+import lynbrook.sail.actor.Weapon;
 import lynbrook.sail.controller.GameController;
 
 
@@ -28,6 +29,12 @@ public abstract class Scenario
 
 
     public Player getCurrentPlayer()
+    {
+        return null;
+    }
+
+
+    public Weapon getCurrentWeapon()
     {
         return null;
     }

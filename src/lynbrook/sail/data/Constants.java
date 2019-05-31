@@ -42,9 +42,9 @@ public class Constants
 
     public static final int HEIGHT = 1280;
 
-    public static final int HEIGHT2 = HEIGHT + 16;
+    public static final int KING_HEALTH = 2000;
 
-    public static final int SCALE = 1;
+    public static final int PIRATE_HEALTH = 100;
 
     public static final int FPS = 30;
 
@@ -69,6 +69,14 @@ public class Constants
     public static final String RESOURCE_PIRATE = "/pirate.png";
 
     public static final String RESOURCE_BOAT = "/boat.png";
+
+    public static final String RESOUCE_BOMB_SOUND = "/bomb.wav";
+
+    public static final String RESOURCE_CANNON = "/cannon.png";
+
+    public static final String RESOURCE_CANNON_BALL = "/cannon_ball.png";
+
+    public static final String RESOURCE_EXPLOSION = "/explosion.png";
 
     public static final String RESOURCE_WATER = "/ocean_water.png";
 
