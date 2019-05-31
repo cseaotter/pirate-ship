@@ -6,6 +6,10 @@ import lynbrook.sail.data.Constants;
 
 public class PirateWeapon extends Weapon
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     private int maxRight = 0;
 
 

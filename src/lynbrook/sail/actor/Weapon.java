@@ -1,12 +1,18 @@
 package lynbrook.sail.actor;
 
 import java.awt.Point;
+import java.io.Serializable;
+
 import lynbrook.sail.data.Constants;
-import lynbrook.sail.network.BattleData;
 
 
-public class Weapon
+public class Weapon implements Serializable
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     private Point loc;
 
     private Point bulletLoc;
@@ -31,19 +37,6 @@ public class Weapon
         this.health = health;
         setAngle( 0 );
         remoteHealth = -1;
-    }
-
-
-    public void update( BattleData data )
-    {
-        health = data.getHealth();
-        angle = data.getAngle();
-        loc = data.getLoc();
-        bulletLoc = data.getBulletLoc();
-        remoteHealth = data.getRemoteHealth();
-        bulletActive = data.isBulletActive();
-        bulletExplosion = data.isBulletExplosion();
-        explosionFrame = data.getExplosionFrame();
     }
 
 

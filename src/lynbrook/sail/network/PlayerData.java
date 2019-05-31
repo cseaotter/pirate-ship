@@ -3,6 +3,7 @@ package lynbrook.sail.network;
 import java.awt.Point;
 import java.io.Serializable;
 
+import lynbrook.sail.actor.Weapon;
 import lynbrook.sail.data.Constants;
 
 
@@ -10,35 +11,28 @@ public class PlayerData implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    private int x;
-
-    private int y;
-
-    private String name;
-
     private int role;
 
     private int scenario;
 
-    private BattleData battleData;
+    private Point loc;
+
+    private Weapon weapon;
 
 
     public PlayerData()
     {
-
-        name = "";
         role = Constants.ROLE_KING;
-        setBattleData( new BattleData() );
+        loc = new Point();
+        setWeapon( new Weapon( 0 ) );
     }
 
 
-    public PlayerData( Point point, String name, int role )
+    public PlayerData( Point point, int role )
     {
-        x = point.x;
-        y = point.y;
-        this.name = name;
+        loc = point;
         this.role = role;
-        setBattleData( new BattleData() );
+        setWeapon( new Weapon( 0 ) );
     }
 
 
@@ -48,21 +42,16 @@ public class PlayerData implements Serializable
         {
             return false;
         }
-        return this == o || x == o.x && y == o.y && role == o.role && scenario == o.scenario
-            && battleData.equals( o.battleData );
+        return this == o || role == o.role && scenario == o.scenario
+            && ( loc != null && loc.equals( o.loc ) || loc == null && o.loc == null )
+            && ( weapon != null && weapon.equals( o.weapon )
+                || weapon == null && o.weapon == null );
     }
 
 
     public void setPoint( Point point )
     {
-        x = point.x;
-        y = point.y;
-    }
-
-
-    public void setName( String name )
-    {
-        this.name = name;
+        loc = point;
     }
 
 
@@ -74,13 +63,7 @@ public class PlayerData implements Serializable
 
     public Point getPoit()
     {
-        return new Point( x, y );
-    }
-
-
-    public String getName()
-    {
-        return name;
+        return loc;
     }
 
 
@@ -90,15 +73,15 @@ public class PlayerData implements Serializable
     }
 
 
-    public BattleData getBattleData()
+    public Weapon getWeapon()
     {
-        return battleData;
+        return weapon;
     }
 
 
-    public void setBattleData( BattleData battleData )
+    public void setWeapon( Weapon weapon )
     {
-        this.battleData = battleData;
+        this.weapon = weapon;
     }
 
 

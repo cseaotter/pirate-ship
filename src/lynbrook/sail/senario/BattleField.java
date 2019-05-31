@@ -17,7 +17,6 @@ import lynbrook.sail.actor.PirateWeapon;
 import lynbrook.sail.actor.Weapon;
 import lynbrook.sail.controller.GameController;
 import lynbrook.sail.data.Constants;
-import lynbrook.sail.network.BattleData;
 import lynbrook.sail.network.PlayerData;
 
 
@@ -119,7 +118,7 @@ public class BattleField extends Scenario
         {
             int remoteRole = remoteRole();
             PlayerData remotePlayerData = dataMap.get( remoteRole );
-            BattleData battleData = remotePlayerData.getBattleData();
+            Weapon battleData = remotePlayerData.getWeapon();
             if ( remoteWeapon == null )
             {
                 if ( remoteRole == Constants.ROLE_KING )
@@ -134,7 +133,10 @@ public class BattleField extends Scenario
                 }
             }
 
-            remoteWeapon.update( battleData );
+            if ( battleData != null )
+            {
+                remoteWeapon = battleData;
+            }
 
             if ( remoteWeapon.getRemoteHealth() != -1
                 || remotePlayerData.getScenario() == Constants.SCENARIO_RESULT )
@@ -192,8 +194,11 @@ public class BattleField extends Scenario
 
                 if ( shoot )
                 {
-                    int health = remoteWeapon.getHealth() - 20;
-                    weapon.setRemoteHealth( health );
+                    if ( remoteWeapon != null )
+                    {
+                        int health = remoteWeapon.getHealth() - Constants.BOMB_DAMAGE;
+                        weapon.setRemoteHealth( health );
+                    }
                     weapon.setBulletExplosion( true );
                     explosion = 0;
                     mController.playBombSound();

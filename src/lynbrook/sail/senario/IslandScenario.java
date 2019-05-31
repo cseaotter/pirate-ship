@@ -69,8 +69,6 @@ public class IslandScenario extends Scenario
         handleMouseEvent();
         mMap.update();
 
-        getCurrentPlayer().update();
-
         if ( mController.getPlayerDataMap().size() == 2 )
         {
             PlayerData data = mController.getPlayerDataMap().get( remoteRole() );
@@ -142,23 +140,6 @@ public class IslandScenario extends Scenario
 
     public void handleKeyEvents()
     {
-        Player player = getCurrentPlayer();
-        if ( mController.isDown( KeyEvent.VK_LEFT ) )
-        {
-            player.setLeft();
-        }
-        if ( mController.isDown( KeyEvent.VK_RIGHT ) )
-        {
-            player.setRight();
-        }
-        if ( mController.isDown( KeyEvent.VK_UP ) )
-        {
-            player.setUp();
-        }
-        if ( mController.isDown( KeyEvent.VK_DOWN ) )
-        {
-            player.setDown();
-        }
 
     }
 

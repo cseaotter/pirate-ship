@@ -46,6 +46,8 @@ public class Constants
 
     public static final int PIRATE_HEALTH = 100;
 
+    public static final int BOMB_DAMAGE = 20;
+
     public static final int FPS = 30;
 
     public static final int TARGET_TIME = 1000 / FPS;

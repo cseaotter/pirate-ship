@@ -14,8 +14,8 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 import lynbrook.sail.senario.Scenario;
+import lynbrook.sail.actor.Weapon;
 import lynbrook.sail.data.Constants;
-import lynbrook.sail.network.BattleData;
 import lynbrook.sail.network.DataUpdate;
 import lynbrook.sail.network.NetworkRunnable;
 import lynbrook.sail.network.PlayerData;
@@ -36,7 +36,7 @@ public class GameController extends KeyAdapter implements MouseListener, DataUpd
 
     private Point lastLoc;
 
-    private BattleData lastBattleData;
+    private Weapon lastWp;
 
     private int role;
 
@@ -52,7 +52,7 @@ public class GameController extends KeyAdapter implements MouseListener, DataUpd
         mKeyEventMap = new TreeMap<>();
         mPlayerDataMap = new TreeMap<>();
         lastLoc = new Point();
-        lastBattleData = new BattleData();
+        lastWp = new Weapon( 0 );
         role = Constants.ROLE_KING;
         scenario = Constants.SCENARIO_BEGIN;
         switchScenario( scenario );
@@ -101,7 +101,7 @@ public class GameController extends KeyAdapter implements MouseListener, DataUpd
 
             if ( this.scenario == Constants.SCENARIO_BATTLE_FIELD )
             {
-                lastBattleData.fromWeapon( mScenario.getCurrentWeapon() );
+                lastWp = mScenario.getCurrentWeapon();
             }
             mScenario = null;
         }
@@ -241,15 +241,15 @@ public class GameController extends KeyAdapter implements MouseListener, DataUpd
 
 
     @Override
-    public BattleData getBattleData()
+    public Weapon getBattleData()
     {
-        BattleData data = new BattleData();
+        Weapon weapon = null;
         if ( mScenario != null )
         {
-            data.fromWeapon( mScenario.getCurrentWeapon() );
+            weapon = mScenario.getCurrentWeapon();
         }
 
-        return scenario == Constants.SCENARIO_BATTLE_FIELD ? data : lastBattleData;
+        return scenario == Constants.SCENARIO_BATTLE_FIELD ? weapon : lastWp;
     }
 
 

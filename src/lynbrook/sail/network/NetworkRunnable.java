@@ -86,7 +86,7 @@ public class NetworkRunnable implements Runnable
                 }
                 else if ( scenario >= Constants.SCENARIO_BATTLE_FIELD )
                 {
-                    player.setBattleData( dataUpdate.getBattleData() );
+                    player.setWeapon( dataUpdate.getBattleData() );
                 }
             }
             sendObj.writeObject( playerMap.get( role ) );
@@ -118,7 +118,7 @@ public class NetworkRunnable implements Runnable
         {
             return;
         }
-        PlayerData playerData = new PlayerData( dataUpdate.getCurrentLocation(), "test ", role );
+        PlayerData playerData = new PlayerData( dataUpdate.getCurrentLocation(), role );
         playerMap.put( role, playerData );
     }
 
