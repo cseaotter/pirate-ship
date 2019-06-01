@@ -1,6 +1,7 @@
 package lynbrook.sail.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.awt.Point;
 
@@ -33,5 +34,6 @@ public class JUDataTest
 	{
 		PlayerImage pi = new PlayerImage(Constants.ROLE_KING);
 		// catch exception can't be tested
+		assertNotNull(pi);
 	}
 }

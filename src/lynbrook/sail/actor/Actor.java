@@ -51,7 +51,7 @@ public abstract class Actor
 
 
     /**
-     * Contructs the actor, and creates a map to get information for map
+     * Constructs the actor, and creates a map to get information for map
      * 
      * @param map
      *            the map of the island

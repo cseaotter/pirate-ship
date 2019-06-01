@@ -42,7 +42,6 @@ public class PlayerData implements Serializable
     }
 
 
-
     /**
      * the other constructor is assigning name and role and coordinates based on
      * parameters given
@@ -108,8 +107,6 @@ public class PlayerData implements Serializable
     }
 
 
-
-
     /**
      * Returns the point
      * 
@@ -134,6 +131,7 @@ public class PlayerData implements Serializable
 
     /**
      * gets the weapon
+     * 
      * @return weapon the weapon
      */
     public Weapon getWeapon()
@@ -145,7 +143,9 @@ public class PlayerData implements Serializable
 
     /**
      * Sets weapon
-     * @param weapon the weapon
+     * 
+     * @param weapon
+     *            the weapon
      */
     public void setWeapon( Weapon weapon )
 

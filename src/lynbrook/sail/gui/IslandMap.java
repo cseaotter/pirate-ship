@@ -31,21 +31,6 @@ public class IslandMap
 
     private int y;
 
-    private int xDest;
-
-    private int yDest;
-
-    private int speed;
-
-    // bounds
-    private int xMin;
-
-    private int yMin;
-
-    private int xMax;
-
-    private int yMax;
-
     // map
     private int[][] mMap;
 
@@ -54,10 +39,6 @@ public class IslandMap
     private int mMapRows;
 
     private int mMapCols;
-
-    private int mWidth;
-
-    private int mHeight;
 
     private BufferedImage mIsland;
 
@@ -73,7 +54,6 @@ public class IslandMap
     public IslandMap( int itemSize )
     {
         this.itemSize = itemSize;
-        speed = 4;
     }
 
 
@@ -116,13 +96,6 @@ public class IslandMap
             mMapCols = Integer.parseInt( br.readLine() );
             mMapRows = Integer.parseInt( br.readLine() );
             mMap = new int[mMapRows][mMapCols];
-            mWidth = mMapCols * itemSize;
-            mHeight = mMapRows * itemSize;
-
-            xMin = -mWidth;
-            xMax = 0;
-            yMin = -mHeight;
-            yMax = 0;
 
             String delims = "\\s+";
             for ( int row = 0; row < mMapRows; row++ )
@@ -252,73 +225,6 @@ public class IslandMap
     public int getIndex( int row, int col )
     {
         return mMap[row][col];
-    }
-
-
-    /**
-     * checks that the coordinate is within the bounds
-     */
-    private void checkBound()
-    {
-        if ( x < xMin )
-        {
-            x = xMin;
-        }
-        if ( y < yMin )
-        {
-            y = yMin;
-        }
-        if ( x > xMax )
-        {
-            x = xMax;
-        }
-        if ( y > yMax )
-        {
-            y = yMax;
-        }
-    }
-
-
-    /**
-     * Updates the coordinates based on the variables of the destination
-     */
-    public void update()
-    {
-        if ( x < xDest )
-        {
-            x += speed;
-            if ( x > xDest )
-            {
-                x = xDest;
-            }
-        }
-        if ( x > xDest )
-        {
-            x -= speed;
-            if ( x < xDest )
-            {
-                x = xDest;
-            }
-        }
-        if ( y < yDest )
-        {
-            y += speed;
-            if ( y > yDest )
-            {
-                y = yDest;
-            }
-        }
-        if ( y > yDest )
-        {
-            y -= speed;
-            if ( y < yDest )
-            {
-                y = yDest;
-            }
-        }
-
-        checkBound();
-
     }
 
 

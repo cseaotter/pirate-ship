@@ -18,7 +18,7 @@ import lynbrook.sail.data.Constants;
  */
 public class Weapon implements Serializable
 {
-    
+
     private static final long serialVersionUID = 1L;
 
     private Point loc;
@@ -54,7 +54,6 @@ public class Weapon implements Serializable
     }
 
 
-
     /**
      * Returns the location
      * 
@@ -64,6 +63,33 @@ public class Weapon implements Serializable
     public Point getLoc()
     {
         return loc;
+    }
+
+
+    /**
+     * @param o
+     *            another weapon to compare
+     * @return true if equal; otherwise false
+     */
+    public boolean equals( Weapon o )
+    {
+        boolean result = ( o == this );
+
+        if ( o == null )
+        {
+            return false;
+        }
+        result = result || bulletActive == o.bulletActive && bulletExplosion == o.bulletExplosion
+            && explosionFrame == o.getExplosionFrame() && angle == o.angle && health == o.health
+            && remoteHealth == o.remoteHealth;
+
+        result = result
+            && ( loc != null && loc.equals( o.loc ) || loc == null && o.bulletLoc == null );
+        result = result && ( bulletLoc != null && bulletLoc.equals( o.bulletLoc )
+            || bulletLoc == null && o.bulletLoc == null );
+
+        return result;
+
     }
 
 
