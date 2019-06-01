@@ -52,7 +52,7 @@ public class Constants
 
     public static final int HEIGHT = 1280;
 
-    public static final int KING_HEALTH = 2000;
+    public static final int KING_HEALTH = 500;
 
     public static final int PIRATE_HEALTH = 100;
 
@@ -70,7 +70,7 @@ public class Constants
 
     // the server's ip address for the pirate to connect. the pirate needs to
     // temporarily change this.
-    public static final String PIRATE_VS_KING_IP_ADDRESS = "192.168.0.76";
+    public static final String PIRATE_VS_KING_IP_ADDRESS = "192.168.0.73";
 
     public static final String RESOURCE_ISLAND_SCENARIO_MAP = "/island_map.txt";
 
