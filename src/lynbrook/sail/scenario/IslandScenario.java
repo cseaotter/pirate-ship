@@ -90,7 +90,6 @@ public class IslandScenario extends Scenario
         handleKeyEvents();
 
         handleMouseEvent();
-        mMap.update();
 
         if ( mController.getPlayerDataMap().size() == 2 )
         {

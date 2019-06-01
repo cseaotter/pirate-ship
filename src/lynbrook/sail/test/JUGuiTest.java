@@ -31,26 +31,19 @@ public class JUGuiTest
 		assertEquals(im.isBlocked(Constants.ROLE_KING, 11, 5), true);
 		assertEquals(im.isBlocked(Constants.ROLE_KING, 5, 11), false);
 		assertEquals(im.isBlocked(Constants.ROLE_KING, 18, 11), false);
-		int[][] map = im.getMap();
-		System.out.println("map 11, 5=" + map[5][11]);
 		assertEquals(im.getIndex(im.getx(), im.gety()) != Constants.LAND, (im.isBlocked(Constants.ROLE_KING, 11, 5)));
 
-		System.out.println("map 7, 14=" + map[14][7]);
 		assertEquals(im.getIndex(im.getx(), im.gety()) == Constants.LAND, (im.isBlocked(Constants.ROLE_KING, 7, 14)));
 
-		System.out.println("map 9, 9=" + map[9][9]);
 		im.isBlocked(Constants.ROLE_PIRATE, 9, 9);
 		assertEquals(im.getIndex(im.getx(), im.gety()) == Constants.WATER, (im.isBlocked(Constants.ROLE_KING, 9, 9)));
 
-		System.out.println("map 7, 14=" + map[14][7]);
 		assertEquals(im.getIndex(im.getx(), im.gety()) == Constants.WATER,
 				(im.isBlocked(Constants.ROLE_PIRATE, 7, 14)));
 
-		im.update();
 		im.getNumRows();
 		im.getNumCols();
-		
-		// TODO: update
+
 	}
 
 	// Test MapImage class
