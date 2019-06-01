@@ -56,6 +56,6 @@ public class JUGuiTest
 		mi.setType(1);
 		assertEquals(mi.getType(), 1);
 	}
-	
-	//main class PirateVsKing doesn't need to be tested since it's GUI
+
+	// main class PirateVsKing doesn't need to be tested since it's GUI
 }

@@ -2,29 +2,28 @@ package lynbrook.sail.actor;
 
 import lynbrook.sail.data.Constants;
 
-
 /**
  * King Weapon, the weapon for the king player
  *
- * @author yinin
+ * @author Elaine
  * @version May 31, 2019
- * @author Period: TODO
+ * @author Period: 3
  * @author Assignment: pirateShip
  *
- * @author Sources: TODO
+ * @author Sources: none
  */
 public class KingWeapon extends Weapon
 {
-    
-    private static final long serialVersionUID = 1L;
 
-    /**
-     * Contructs a king weapon
-     */
+	private static final long serialVersionUID = 1L;
 
-    public KingWeapon()
-    {
-        super( Constants.KING_HEALTH );
-    }
+	/**
+	 * Contructs a king weapon
+	 */
+
+	public KingWeapon()
+	{
+		super(Constants.KING_HEALTH);
+	}
 
 }

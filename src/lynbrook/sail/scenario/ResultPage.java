@@ -10,106 +10,95 @@ import javax.imageio.ImageIO;
 import lynbrook.sail.controller.GameController;
 import lynbrook.sail.data.Constants;
 
-
 /**
  * 
  * The result page initialization and drawing and this class is a Scenario
  *
- * @author yinin
+ * @author Carol and Lucy
  * @version May 31, 2019
- * @author Period: TODO
+ * @author Period: 3
  * @author Assignment: pirateShip
  *
- * @author Sources: TODO
+ * @author Sources: none
  */
 public class ResultPage extends Scenario
 {
 
-    private BufferedImage won;
+	private BufferedImage won;
 
-    private BufferedImage lost;
+	private BufferedImage lost;
 
+	/**
+	 * The result page constructor
+	 * 
+	 * @param controller GameController
+	 */
+	public ResultPage(GameController controller)
+	{
+		super(controller);
+		init();
+	}
 
-    /**
-     * The result page contructor
-     * 
-     * @param controller
-     *            GameController
-     */
-    public ResultPage( GameController controller )
-    {
-        super( controller );
-        init();
-    }
+	/**
+	 * initializes the image for the Result page
+	 */
+	private void init()
+	{
+		try
+		{
+			won = ImageIO.read(getClass().getResourceAsStream(Constants.RESOURCE_RESULT_WON));
 
+			lost = ImageIO.read(getClass().getResourceAsStream(Constants.RESOURCE_RESULT_LOST));
 
-    /**
-     * initializes the image for the Result page
-     */
-    private void init()
-    {
-        try
-        {
-            won = ImageIO.read( getClass().getResourceAsStream( Constants.RESOURCE_RESULT_WON ) );
+		} catch (Exception e)
+		{
 
-            lost = ImageIO.read( getClass().getResourceAsStream( Constants.RESOURCE_RESULT_LOST ) );
+		}
+	}
 
-        }
-        catch ( Exception e )
-        {
+	/**
+	 * Update from Scenario
+	 */
+	@Override
+	public void update()
+	{
 
-        }
-    }
+	}
 
+	/**
+	 * Draws the result page
+	 * 
+	 * @param g Graphics2D
+	 */
+	@Override
+	public void draw(Graphics2D g)
+	{
+		BufferedImage image = mController.getResult() ? won : lost;
+		int x = Constants.WIDTH / 2 - image.getWidth() / 2;
+		int y = Constants.HEIGHT / 2 - image.getHeight() / 2;
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, Constants.WIDTH, Constants.HEIGHT);
+		g.drawImage(image, x, y, null);
+	}
 
-    /**
-     * Update from Scenario
-     */
-    @Override
-    public void update()
-    {
+	/**
+	 * handling key events from Scenario
+	 */
+	@Override
+	public void handleKeyEvents()
+	{
 
-    }
+	}
 
+	/**
+	 * handling mouse clicked events from Scenario
+	 * 
+	 * @param e MouseEvent
+	 */
+	@Override
+	public void handleMouseClicked(MouseEvent e)
+	{
 
-    /**
-     * Draws the result page
-     * 
-     * @param g
-     *            Graphics2D
-     */
-    @Override
-    public void draw( Graphics2D g )
-    {
-        BufferedImage image = mController.getResult() ? won : lost;
-        int x = Constants.WIDTH / 2 - image.getWidth() / 2;
-        int y = Constants.HEIGHT / 2 - image.getHeight() / 2;
-        g.setColor( Color.BLACK );
-        g.fillRect( 0, 0, Constants.WIDTH, Constants.HEIGHT );
-        g.drawImage( image, x, y, null );
-    }
-
-
-    /**
-     * handling key events from Scenario
-     */
-    @Override
-    public void handleKeyEvents()
-    {
-
-    }
-
-
-    /**
-     * handling mouse clicked events from Scenario
-     * 
-     * @param e
-     *            MouseEvent
-     */
-    @Override
-    public void handleMouseClicked( MouseEvent e )
-    {
-
-    }
+	}
 
 }

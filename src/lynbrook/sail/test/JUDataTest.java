@@ -17,17 +17,17 @@ import lynbrook.sail.data.PlayerImage;
  */
 public class JUDataTest
 {
-	//Constants have only constant fields so they don't need to be tested
-	
+	// Constants have only constant fields so they don't need to be tested
+
 	// Test PathOfMoving class
 	@Test
 	public void pathOfMovingClassTest()
 	{
-		PathOfMoving po = new PathOfMoving(new Point(9,9), null);
-		assertEquals(po.getPoint(), new Point(9,9));
+		PathOfMoving po = new PathOfMoving(new Point(9, 9), null);
+		assertEquals(po.getPoint(), new Point(9, 9));
 		assertEquals(po.getNext(), null);
 	}
-	
+
 	// Test PlayerImage class
 	@Test
 	public void playerImageClassTest()
