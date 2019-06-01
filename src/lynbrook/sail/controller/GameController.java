@@ -14,16 +14,16 @@ import java.util.TreeMap;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
-import lynbrook.sail.senario.Scenario;
 import lynbrook.sail.actor.Weapon;
 import lynbrook.sail.data.Constants;
 import lynbrook.sail.network.DataUpdate;
 import lynbrook.sail.network.NetworkRunnable;
 import lynbrook.sail.network.PlayerData;
-import lynbrook.sail.senario.BattleField;
-import lynbrook.sail.senario.BeginningPage;
-import lynbrook.sail.senario.IslandScenario;
-import lynbrook.sail.senario.ResultPage;
+import lynbrook.sail.scenario.BattleField;
+import lynbrook.sail.scenario.BeginningPage;
+import lynbrook.sail.scenario.IslandScenario;
+import lynbrook.sail.scenario.ResultPage;
+import lynbrook.sail.scenario.Scenario;
 
 
 /**

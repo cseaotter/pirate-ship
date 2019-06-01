@@ -10,6 +10,10 @@ import lynbrook.sail.data.Constants;
 import lynbrook.sail.data.PathOfMoving;
 import lynbrook.sail.data.PlayerImage;
 
+/**
+ * @author carol
+ *
+ */
 public class JUDataTest
 {
 	//Constants have only constant fields so they don't need to be tested

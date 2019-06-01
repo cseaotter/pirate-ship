@@ -1,4 +1,4 @@
-package lynbrook.sail.senario;
+package lynbrook.sail.scenario;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -31,8 +31,16 @@ import lynbrook.sail.network.PlayerData;
  */
 public class IslandScenario extends Scenario
 {
+    private Map<Integer, Player> mPlayers;
+
+    private IslandMap mMap;
+
+    private LinkedList<Point> mPath;
+
+
+
     /**
-     * Island Senario contructor
+     * Island Scenario constructor
      * 
      * @param controller
      *            the controller
@@ -42,12 +50,6 @@ public class IslandScenario extends Scenario
         super( controller );
         init();
     }
-
-    private Map<Integer, Player> mPlayers;
-
-    private IslandMap mMap;
-
-    private LinkedList<Point> mPath;
 
 
     /**

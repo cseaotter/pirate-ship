@@ -15,6 +15,10 @@ import lynbrook.sail.actor.Weapon;
 import lynbrook.sail.data.Constants;
 import lynbrook.sail.gui.IslandMap;
 
+/**
+ * @author carol
+ *
+ */
 public class JUActorTest
 {
 	// Test Actor class

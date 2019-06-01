@@ -22,6 +22,10 @@ import lynbrook.sail.data.Constants;
 import lynbrook.sail.network.PlayerData;
 
 
+/**
+ * @author carol
+ *
+ */
 public class JUControllerTest
 {
 
@@ -48,8 +52,7 @@ public class JUControllerTest
         gc.switchScenario( Constants.SCENARIO_BATTLE_FIELD );
         assertNotNull( gc.getBattleData() );
         Button a = new Button( "click" );
-        KeyEvent e;
-        e = new KeyEvent( a, 1, 20, 1, KeyEvent.VK_UP, 'a' );
+        KeyEvent e = new KeyEvent( a, 1, 20, 1, KeyEvent.VK_UP, 'a' );
 
         gc.keyPressed( e );
         assertTrue( gc.isDown( KeyEvent.VK_UP ) );

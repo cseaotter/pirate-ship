@@ -1,4 +1,4 @@
-package lynbrook.sail.senario;
+package lynbrook.sail.scenario;
 
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;

@@ -2,15 +2,19 @@ package lynbrook.sail.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Point;
 
 import org.junit.Test;
 
-import lynbrook.sail.actor.Weapon;
 import lynbrook.sail.data.Constants;
 import lynbrook.sail.network.PlayerData;
 
+/**
+ * @author carol
+ *
+ */
 public class JUNetworkTest
 {
 	// Test PlayerData class
@@ -22,6 +26,9 @@ public class JUNetworkTest
 		PlayerData pd2 = null;
 		assertFalse(pd.equals(pd1));
 		assertFalse(pd.equals(pd2));
+		pd.setPoint(new Point(1,1));
+		pd1.setPoint(new Point(1,1));
+		//assertTrue(pd.equals(pd1));
 
 		pd.setPoint(new Point(9, 9));
 		assertEquals(pd.getPoint(), new Point(9, 9));

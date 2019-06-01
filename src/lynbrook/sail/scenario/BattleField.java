@@ -1,4 +1,4 @@
-package lynbrook.sail.senario;
+package lynbrook.sail.scenario;
 
 import java.awt.Color;
 import java.awt.Graphics2D;

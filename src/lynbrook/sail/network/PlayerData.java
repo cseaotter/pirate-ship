@@ -115,7 +115,7 @@ public class PlayerData implements Serializable
      * 
      * @return the loc
      */
-    public Point getPoit()
+    public Point getPoint()
     {
         return loc;
     }

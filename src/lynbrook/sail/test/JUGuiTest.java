@@ -10,6 +10,10 @@ import lynbrook.sail.data.Constants;
 import lynbrook.sail.gui.IslandMap;
 import lynbrook.sail.gui.MapImage;
 
+/**
+ * @author carol
+ *
+ */
 public class JUGuiTest
 {
 	// GamePanel class has only GUI and private methods, thus don't need to write
