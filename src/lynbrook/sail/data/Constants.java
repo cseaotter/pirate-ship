@@ -1,5 +1,15 @@
 package lynbrook.sail.data;
 
+/**
+ * The different Constants that the program uses throughout its classes
+ *
+ * @author yinin
+ * @version May 31, 2019
+ * @author Period: TODO
+ * @author Assignment: pirateShip
+ *
+ * @author Sources: TODO
+ */
 public class Constants
 {
     public static final int SCENARIO_BEGIN = 0;

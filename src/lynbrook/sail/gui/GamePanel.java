@@ -8,7 +8,16 @@ import javax.swing.JPanel;
 import lynbrook.sail.controller.GameController;
 import lynbrook.sail.data.Constants;
 
-
+/**
+ * GamePanel
+ *
+ *  @author  yinin
+ *  @version May 31, 2019
+ *  @author  Period: TODO
+ *  @author  Assignment: pirateShip
+ *
+ *  @author  Sources: TODO
+ */
 public class GamePanel extends JPanel implements Runnable
 {
     private BufferedImage mMemoryImage;
@@ -23,7 +32,9 @@ public class GamePanel extends JPanel implements Runnable
 
     private GameController mController;
 
-
+    /**
+     * Constructs the Game Panel
+     */
     public GamePanel()
     {
         setPreferredSize( new Dimension( Constants.WIDTH, Constants.HEIGHT ) );
@@ -54,7 +65,9 @@ public class GamePanel extends JPanel implements Runnable
         }
     }
 
-
+    /**
+     * Runs panel
+     */
     public void run()
     {
         long start;
@@ -68,7 +81,10 @@ public class GamePanel extends JPanel implements Runnable
 
     }
 
-
+    /**
+     * Lets the thread sleep to save CPU
+     * @param start the starting time
+     */
     private void waitIfNecessary( long start )
     {
 
@@ -88,7 +104,9 @@ public class GamePanel extends JPanel implements Runnable
         }
     }
 
-
+    /**
+     * Updates the graphics
+     */
     private void update()
     {
         mController.update();

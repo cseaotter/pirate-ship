@@ -1,3 +1,4 @@
+
 package lynbrook.sail.controller;
 
 import java.awt.Graphics2D;
@@ -25,6 +26,18 @@ import lynbrook.sail.senario.IslandScenario;
 import lynbrook.sail.senario.ResultPage;
 
 
+/**
+ * 
+ * GameController switches scenarios and stores information about the running
+ * game
+ *
+ * @author yinin
+ * @version May 31, 2019
+ * @author Period: TODO
+ * @author Assignment: pirateShip
+ *
+ * @author Sources: TODO
+ */
 public class GameController extends KeyAdapter implements MouseListener, DataUpdate
 {
 
@@ -47,6 +60,9 @@ public class GameController extends KeyAdapter implements MouseListener, DataUpd
     Thread messageThread;
 
 
+    /**
+     * Constructs the game controller Initializes the variables
+     */
     public GameController()
     {
         mKeyEventMap = new TreeMap<>();
@@ -59,36 +75,69 @@ public class GameController extends KeyAdapter implements MouseListener, DataUpd
     }
 
 
+    /**
+     * The map of the playerData
+     * 
+     * @return mPlayerDataMap the map
+     */
     public Map<Integer, PlayerData> getPlayerDataMap()
     {
         return mPlayerDataMap;
     }
 
 
+    /**
+     * Sets the currentRole of the player
+     * 
+     * @param role
+     *            the role
+     */
     public void setCurrentRole( int role )
     {
         this.role = role;
     }
 
 
+    /**
+     * Returns the currentRole
+     * 
+     * @return role the role
+     */
     public int getCurrentRole()
     {
         return role;
     }
 
 
+    /**
+     * Returns the result of the game
+     * 
+     * @return won the result
+     */
     public boolean getResult()
     {
         return won;
     }
 
 
+    /**
+     * Sets the result
+     * 
+     * @param won
+     *            if won or not
+     */
     public void setResult( boolean won )
     {
         this.won = won;
     }
 
 
+    /**
+     * The scenarios for battlefields and switch cases to handle each scenario
+     * 
+     * @param scenario
+     *            the scenario id
+     */
     public void switchScenario( int scenario )
     {
 
@@ -131,6 +180,9 @@ public class GameController extends KeyAdapter implements MouseListener, DataUpd
     }
 
 
+    /**
+     * If the scenario is not null, the mScenario updates
+     */
     public void update()
     {
         if ( mScenario != null )
@@ -140,6 +192,12 @@ public class GameController extends KeyAdapter implements MouseListener, DataUpd
     }
 
 
+    /**
+     * Draws this scenario
+     * 
+     * @param g
+     *            Graphics
+     */
     public void draw( Graphics2D g )
     {
         if ( mScenario != null )
@@ -149,6 +207,9 @@ public class GameController extends KeyAdapter implements MouseListener, DataUpd
     }
 
 
+    /**
+     * Takes in keyevent and puts it into the map
+     */
     @Override
     public void keyPressed( KeyEvent key )
     {
@@ -156,6 +217,9 @@ public class GameController extends KeyAdapter implements MouseListener, DataUpd
     }
 
 
+    /**
+     * Takes in keyevent and puts it into the map
+     */
     @Override
     public void keyReleased( KeyEvent key )
     {
@@ -163,12 +227,25 @@ public class GameController extends KeyAdapter implements MouseListener, DataUpd
     }
 
 
+    /**
+     * returns if the key is in the map and if the key is the keycode passedin
+     * 
+     * @param keyCode
+     *            the keyCode id
+     * @return true or false based on the above specs
+     */
     public boolean isDown( int keyCode )
     {
         return mKeyEventMap.containsKey( keyCode ) && mKeyEventMap.get( keyCode );
     }
 
 
+    /**
+     * if not null handles the mouse clicked event
+     * 
+     * @param e
+     *            MouseEvent
+     */
     @Override
     public void mouseClicked( MouseEvent e )
     {
@@ -180,6 +257,12 @@ public class GameController extends KeyAdapter implements MouseListener, DataUpd
     }
 
 
+    /**
+     * if not null handles the mouse pressed event
+     * 
+     * @param e
+     *            MouseEvent
+     */
     @Override
     public void mousePressed( MouseEvent e )
     {
@@ -190,6 +273,11 @@ public class GameController extends KeyAdapter implements MouseListener, DataUpd
     }
 
 
+    /**
+     * if not null handles the mouse released event
+     * 
+     * @param MouseEvent
+     */
     @Override
     public void mouseReleased( MouseEvent e )
     {
@@ -201,6 +289,12 @@ public class GameController extends KeyAdapter implements MouseListener, DataUpd
     }
 
 
+    /**
+     * mouseEntered event
+     * 
+     * @param e
+     *            event
+     */
     @Override
     public void mouseEntered( MouseEvent e )
     {
@@ -208,6 +302,12 @@ public class GameController extends KeyAdapter implements MouseListener, DataUpd
     }
 
 
+    /**
+     * mouseExited event
+     * 
+     * @param e
+     *            event
+     */
     @Override
     public void mouseExited( MouseEvent e )
     {
@@ -215,6 +315,12 @@ public class GameController extends KeyAdapter implements MouseListener, DataUpd
     }
 
 
+    /**
+     * update the playerData map
+     * 
+     * @param playerMap
+     *            the map with all the playerData
+     */
     @Override
     public void onUpdateData( Map<Integer, PlayerData> playerMap )
     {
@@ -226,6 +332,9 @@ public class GameController extends KeyAdapter implements MouseListener, DataUpd
     }
 
 
+    /**
+     * Get current location
+     */
     @Override
     public Point getCurrentLocation()
     {
@@ -233,6 +342,9 @@ public class GameController extends KeyAdapter implements MouseListener, DataUpd
     }
 
 
+    /**
+     * Returns scenario
+     */
     @Override
     public int getScenario()
     {
@@ -240,6 +352,9 @@ public class GameController extends KeyAdapter implements MouseListener, DataUpd
     }
 
 
+    /**
+     * Get battleData
+     */
     @Override
     public Weapon getBattleData()
     {
@@ -253,6 +368,9 @@ public class GameController extends KeyAdapter implements MouseListener, DataUpd
     }
 
 
+    /**
+     * Play the bomb sound form the clip.
+     */
     public void playBombSound()
     {
         try

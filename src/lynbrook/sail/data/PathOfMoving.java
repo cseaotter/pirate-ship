@@ -1,8 +1,19 @@
- package lynbrook.sail.data;
+package lynbrook.sail.data;
 
 import java.awt.Point;
 
 
+/**
+ * 
+ * Stores the where the point is, and where it is going to be
+ *
+ * @author yinin
+ * @version May 31, 2019
+ * @author Period: TODO
+ * @author Assignment: pirateShip
+ *
+ * @author Sources: TODO
+ */
 public class PathOfMoving
 {
     private Point point;
@@ -10,6 +21,14 @@ public class PathOfMoving
     private PathOfMoving next;
 
 
+    /**
+     * Constucts the "path" point to next one
+     * 
+     * @param point
+     *            the point
+     * @param next
+     *            the next one
+     */
     public PathOfMoving( Point point, PathOfMoving next )
     {
         this.point = point;
@@ -17,12 +36,22 @@ public class PathOfMoving
     }
 
 
+    /**
+     * Returns the point
+     * 
+     * @return point the point
+     */
     public Point getPoint()
     {
         return point;
     }
 
 
+    /**
+     * Returns the next one
+     * 
+     * @return next the next point
+     */
     public PathOfMoving getNext()
     {
         return next;

@@ -5,9 +5,26 @@ import lynbrook.sail.data.Constants;
 import lynbrook.sail.gui.IslandMap;
 
 
+/**
+ * Player is an Actor Sets role and draws actor
+ *
+ * @author yinin
+ * @version May 31, 2019
+ * @author Period: TODO
+ * @author Assignment: pirateShip
+ *
+ * @author Sources: TODO
+ */
 public class Player extends Actor
 {
-
+    /**
+     * Constructs player
+     * 
+     * @param map
+     *            the Island Map
+     * @param role
+     *            the role
+     */
     public Player( IslandMap map, int role )
     {
         super( map, role );
@@ -19,6 +36,12 @@ public class Player extends Actor
     }
 
 
+    /**
+     * Draws the graphics2D
+     * 
+     * @param g
+     *            Graphics2D
+     */
     public void draw( Graphics2D g )
     {
         super.draw( g );

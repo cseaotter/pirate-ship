@@ -13,6 +13,17 @@ import java.util.TreeMap;
 import lynbrook.sail.data.Constants;
 
 
+/**
+ * 
+ * Running the networking
+ *
+ * @author yinin
+ * @version May 31, 2019
+ * @author Period: TODO
+ * @author Assignment: pirateShip
+ *
+ * @author Sources: TODO
+ */
 public class NetworkRunnable implements Runnable
 {
 
@@ -29,6 +40,16 @@ public class NetworkRunnable implements Runnable
     private String address;
 
 
+    /**
+     * Constructs NetworkRunnable and sets the role, address, and dataUpdate
+     * 
+     * @param role
+     *            the role
+     * @param address
+     *            the address
+     * @param dataUpdate
+     *            the dataUpdate
+     */
     public NetworkRunnable( int role, String address, DataUpdate dataUpdate )
     {
         this.role = role;
@@ -39,6 +60,9 @@ public class NetworkRunnable implements Runnable
     }
 
 
+    /**
+     * runs the loop(another method) and catches exceptions
+     */
     @Override
     public void run()
     {
@@ -54,6 +78,17 @@ public class NetworkRunnable implements Runnable
     }
 
 
+    /**
+     * Facilitates the connecting of the client and server Gets the objects
+     * which are sent from the socket
+     * 
+     * @throws IOException
+     *             the IOException
+     * @throws ClassNotFoundException
+     *             the ClassNotFoundException
+     * @throws SocketException
+     *             the SocketException
+     */
     private void loop() throws IOException, ClassNotFoundException, SocketException
     {
         if ( role == Constants.ROLE_KING )
@@ -112,6 +147,10 @@ public class NetworkRunnable implements Runnable
     }
 
 
+    /**
+     * Adds the playerData into the map if data update is not null or playerMap
+     * already contains the key
+     */
     private void initCurrentRoleIfNecessary()
     {
         if ( dataUpdate == null || playerMap.containsKey( role ) )
@@ -123,6 +162,12 @@ public class NetworkRunnable implements Runnable
     }
 
 
+    /**
+     * Waits to save some CPU
+     * 
+     * @param start
+     *            the time when it started to wait
+     */
     private void waitIfNecessary( long start )
     {
 

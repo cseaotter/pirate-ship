@@ -11,6 +11,17 @@ import lynbrook.sail.controller.GameController;
 import lynbrook.sail.data.Constants;
 
 
+/**
+ * 
+ * The result page initialization and drawing and this class is a Scenario
+ *
+ * @author yinin
+ * @version May 31, 2019
+ * @author Period: TODO
+ * @author Assignment: pirateShip
+ *
+ * @author Sources: TODO
+ */
 public class ResultPage extends Scenario
 {
 
@@ -19,6 +30,12 @@ public class ResultPage extends Scenario
     private BufferedImage lost;
 
 
+    /**
+     * The result page contructor
+     * 
+     * @param controller
+     *            GameController
+     */
     public ResultPage( GameController controller )
     {
         super( controller );
@@ -26,6 +43,9 @@ public class ResultPage extends Scenario
     }
 
 
+    /**
+     * initializes the image for the Result page
+     */
     private void init()
     {
         try
@@ -42,6 +62,9 @@ public class ResultPage extends Scenario
     }
 
 
+    /**
+     * Update from Scenario
+     */
     @Override
     public void update()
     {
@@ -49,6 +72,12 @@ public class ResultPage extends Scenario
     }
 
 
+    /**
+     * Draws the result page
+     * 
+     * @param g
+     *            Graphics2D
+     */
     @Override
     public void draw( Graphics2D g )
     {
@@ -61,6 +90,9 @@ public class ResultPage extends Scenario
     }
 
 
+    /**
+     * handling key events from Scenario
+     */
     @Override
     public void handleKeyEvents()
     {
@@ -68,6 +100,12 @@ public class ResultPage extends Scenario
     }
 
 
+    /**
+     * handling mouse clicked events from Scenario
+     * 
+     * @param e
+     *            MouseEvent
+     */
     @Override
     public void handleMouseClicked( MouseEvent e )
     {

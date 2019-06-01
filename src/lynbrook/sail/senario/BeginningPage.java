@@ -10,6 +10,17 @@ import lynbrook.sail.controller.GameController;
 import lynbrook.sail.data.Constants;
 
 
+/**
+ * 
+ * scenario of the beginning page of the whole game
+ * 
+ * @author yinin
+ * @version May 31, 2019
+ * @author Period: TODO
+ * @author Assignment: pirateShip
+ *
+ * @author Sources: TODO
+ */
 public class BeginningPage extends Scenario
 {
     private BufferedImage mFrontPage;
@@ -17,6 +28,12 @@ public class BeginningPage extends Scenario
     private BufferedImage mInstructionPage;
 
 
+    /**
+     * The beginning page is a scenario
+     * 
+     * @param controller
+     *            the game controller
+     */
     public BeginningPage( GameController controller )
     {
         super( controller );
@@ -24,6 +41,9 @@ public class BeginningPage extends Scenario
     }
 
 
+    /**
+     * Initializes the Front page image and instruction page image
+     */
     private void init()
     {
         try
@@ -42,6 +62,9 @@ public class BeginningPage extends Scenario
     }
 
 
+    /**
+     * Update, implemetation in Scenario
+     */
     @Override
     public void update()
     {
@@ -49,6 +72,12 @@ public class BeginningPage extends Scenario
     }
 
 
+    /**
+     * Draws the beginning page
+     * 
+     * @param g
+     *            graphics
+     */
     @Override
     public void draw( Graphics2D g )
     {
@@ -56,6 +85,9 @@ public class BeginningPage extends Scenario
     }
 
 
+    /**
+     * handles key events
+     */
     @Override
     public void handleKeyEvents()
     {
@@ -63,6 +95,12 @@ public class BeginningPage extends Scenario
     }
 
 
+    /**
+     * handles mouse events
+     * 
+     * @param e
+     *            mouseevent
+     */
     @Override
     public void handleMouseClicked( MouseEvent e )
     {

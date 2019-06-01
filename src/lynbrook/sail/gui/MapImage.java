@@ -3,6 +3,16 @@ package lynbrook.sail.gui;
 import java.awt.image.BufferedImage;
 
 
+/**
+ * The image of the map
+ *
+ * @author yinin
+ * @version May 31, 2019
+ * @author Period: TODO
+ * @author Assignment: pirateShip
+ *
+ * @author Sources: TODO
+ */
 public class MapImage
 {
 
@@ -15,6 +25,14 @@ public class MapImage
     public static final int BLOCKED = 1;
 
 
+    /**
+     * Constructs the image
+     * 
+     * @param image
+     *            the bufferedimage
+     * @param type
+     *            the type
+     */
     public MapImage( BufferedImage image, int type )
     {
         this.image = image;
@@ -22,18 +40,33 @@ public class MapImage
     }
 
 
+    /**
+     * Return the image
+     * 
+     * @return image the BufferedImage
+     */
     public BufferedImage getImage()
     {
         return image;
     }
 
 
+    /**
+     * Returns the type
+     * 
+     * @return type the type
+     */
     public int getType()
     {
         return type;
     }
 
 
+    /**
+     * sets the type
+     * 
+     * @param type
+     */
     public void setType( int type )
     {
         this.type = type;

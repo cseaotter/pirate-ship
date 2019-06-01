@@ -7,6 +7,16 @@ import lynbrook.sail.actor.Weapon;
 import lynbrook.sail.data.Constants;
 
 
+/**
+ * Stores the data for the player
+ * 
+ * @author yinin
+ * @version May 31, 2019
+ * @author Period: TODO
+ * @author Assignment: pirateShip
+ *
+ * @author Sources: TODO
+ */
 public class PlayerData implements Serializable
 {
     private static final long serialVersionUID = 1L;
@@ -20,6 +30,10 @@ public class PlayerData implements Serializable
     private Weapon weapon;
 
 
+    /**
+     * Constructs the playerData by assigning default name and role and giving
+     * it new BattleData
+     */
     public PlayerData()
     {
         role = Constants.ROLE_KING;
@@ -28,7 +42,20 @@ public class PlayerData implements Serializable
     }
 
 
+
+    /**
+     * the other constructor is assigning name and role and coordinates based on
+     * parameters given
+     * 
+     * @param point
+     *            the coordinates
+     * @param name
+     *            the name given
+     * @param role
+     *            the role of the player
+     */
     public PlayerData( Point point, int role )
+
     {
         loc = point;
         this.role = role;
@@ -36,6 +63,13 @@ public class PlayerData implements Serializable
     }
 
 
+    /**
+     * Tests if Playerdata equals to the other playerdata
+     * 
+     * @param o
+     *            the other player data
+     * @return true or false based on equality
+     */
     public boolean equals( PlayerData o )
     {
         if ( o == null )
@@ -49,48 +83,94 @@ public class PlayerData implements Serializable
     }
 
 
+    /**
+     * Sets the point
+     * 
+     * @param point
+     *            the point to set
+     */
     public void setPoint( Point point )
     {
         loc = point;
+
     }
 
 
+    /**
+     * Sets the role
+     * 
+     * @param role
+     *            the role to set
+     */
     public void setRole( int role )
     {
         this.role = role;
     }
 
 
-    public Point getPoint()
+
+
+    /**
+     * Returns the point
+     * 
+     * @return the loc
+     */
+    public Point getPoit()
     {
         return loc;
     }
 
 
+    /**
+     * Returns the role
+     * 
+     * @return the role of the player
+     */
     public int getRole()
     {
         return role;
     }
 
 
+    /**
+     * gets the weapon
+     * @return weapon the weapon
+     */
     public Weapon getWeapon()
+
     {
         return weapon;
     }
 
 
+    /**
+     * Sets weapon
+     * @param weapon the weapon
+     */
     public void setWeapon( Weapon weapon )
+
     {
         this.weapon = weapon;
     }
 
 
+    /**
+     * Returns scenario
+     * 
+     * @return scenario the scenario
+     */
     public int getScenario()
     {
         return scenario;
     }
 
 
+    /**
+     * Sets the scenario.
+     * 
+     * @param scenario
+     *            the scenario
+     */
     public void setScenario( int scenario )
     {
         this.scenario = scenario;

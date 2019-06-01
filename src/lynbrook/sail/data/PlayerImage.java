@@ -4,6 +4,16 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
 
+/**
+ * The playerImage assigns the images to the variables
+ *
+ * @author yinin
+ * @version May 31, 2019
+ * @author Period: TODO
+ * @author Assignment: pirateShip
+ *
+ * @author Sources: TODO
+ */
 public class PlayerImage
 {
     private BufferedImage mBoat;
@@ -13,6 +23,12 @@ public class PlayerImage
     private int role;
 
 
+    /**
+     * Assigns the mBoat and mKing to images
+     * 
+     * @param role
+     *            the role id
+     */
     public PlayerImage( int role )
     {
         this.role = role;
@@ -28,6 +44,11 @@ public class PlayerImage
     }
 
 
+    /**
+     * Returns the correct image
+     * 
+     * @return the buffered image based on the role
+     */
     public BufferedImage getCurrentImage()
     {
 

@@ -18,9 +18,25 @@ import lynbrook.sail.gui.IslandMap;
 import lynbrook.sail.network.PlayerData;
 
 
+/**
+ * 
+ * The scenario of the island screen
+ *
+ * @author yinin
+ * @version May 31, 2019
+ * @author Period: TODO
+ * @author Assignment: pirateShip
+ *
+ * @author Sources: TODO
+ */
 public class IslandScenario extends Scenario
 {
-
+    /**
+     * Island Senario contructor
+     * 
+     * @param controller
+     *            the controller
+     */
     public IslandScenario( GameController controller )
     {
         super( controller );
@@ -34,6 +50,9 @@ public class IslandScenario extends Scenario
     private LinkedList<Point> mPath;
 
 
+    /**
+     * Initializes the map and castle and variables about the players
+     */
     private void init()
     {
 
@@ -60,6 +79,9 @@ public class IslandScenario extends Scenario
     }
 
 
+    /**
+     * Updates the scenario switching and putting players into the map
+     */
     public void update()
     {
 
@@ -103,6 +125,12 @@ public class IslandScenario extends Scenario
     }
 
 
+    /**
+     * Draws the current player and the remote player
+     * 
+     * @param g
+     *            graphics
+     */
     public void draw( Graphics2D g )
     {
         mMap.draw( g );
@@ -118,6 +146,11 @@ public class IslandScenario extends Scenario
     }
 
 
+    /**
+     * returns player
+     * 
+     * @return remote role
+     */
     @Override
     public Player getCurrentPlayer()
     {
@@ -125,24 +158,40 @@ public class IslandScenario extends Scenario
     }
 
 
+    /**
+     * returns the remote role
+     * 
+     * @return role the remote role
+     */
     private int remoteRole()
     {
         return ( mController.getCurrentRole() + 1 ) % 2;
     }
 
 
+    /**
+     * Return remote player
+     * 
+     * @return the remote player
+     */
     private Player getRemotePlayer()
     {
         return mPlayers.get( remoteRole() );
     }
 
 
+    /**
+     * handles key events for left, right, up, down
+     */
     public void handleKeyEvents()
     {
 
     }
 
 
+    /**
+     * handles mouse events
+     */
     private void handleMouseEvent()
     {
         if ( !mPath.isEmpty() )
@@ -153,6 +202,12 @@ public class IslandScenario extends Scenario
     }
 
 
+    /**
+     * handles mouse clicked
+     * 
+     * @param e
+     *            mouse event
+     */
     @Override
     public void handleMouseClicked( MouseEvent e )
     {
@@ -180,6 +235,13 @@ public class IslandScenario extends Scenario
     }
 
 
+    /**
+     * Finds the path of point from the point given
+     * 
+     * @param fromPoint
+     *            the point given
+     * @return result path of moving
+     */
     private PathOfMoving findPath( Point fromPoint )
     {
         if ( isBlocked( fromPoint ) )
@@ -222,12 +284,28 @@ public class IslandScenario extends Scenario
     }
 
 
+    /**
+     * Returns true or false based on if map is blocked at that point
+     * 
+     * @param point
+     *            the point
+     * @return true or false like above
+     */
     private boolean isBlocked( Point point )
     {
         return mMap.isBlocked( mController.getCurrentRole(), point.x, point.y );
     }
 
 
+    /**
+     * True or false given the point, see if it is in the map
+     * 
+     * @param map
+     *            the array map
+     * @param p
+     *            the point
+     * @return true or false like above
+     */
     private boolean inside( int[][] map, Point p )
     {
         return p.x >= 0 && p.x < map[0].length && p.y >= 0 && p.y < map.length;

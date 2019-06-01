@@ -20,6 +20,19 @@ import lynbrook.sail.data.Constants;
 import lynbrook.sail.network.PlayerData;
 
 
+/**
+ * 
+ * TODO Write a one-sentence summary of your class here. TODO Follow it with
+ * additional details about its purpose, what abstraction it represents, and how
+ * to use it.
+ *
+ * @author yinin
+ * @version May 31, 2019
+ * @author Period: TODO
+ * @author Assignment: pirateShip
+ *
+ * @author Sources: TODO
+ */
 public class BattleField extends Scenario
 {
 
@@ -58,6 +71,12 @@ public class BattleField extends Scenario
     private int explosion;
 
 
+    /**
+     * Constructs a battlefield
+     * 
+     * @param controller
+     *            the gamecontroller
+     */
     public BattleField( GameController controller )
     {
         super( controller );
@@ -65,6 +84,9 @@ public class BattleField extends Scenario
     }
 
 
+    /**
+     * Initializes the images variables and catches exception just in case
+     */
     private void init()
     {
         try
@@ -108,6 +130,9 @@ public class BattleField extends Scenario
     }
 
 
+    /**
+     * Updates the data on the battlefield
+     */
     @Override
     public void update()
     {
@@ -159,6 +184,13 @@ public class BattleField extends Scenario
     }
 
 
+    /**
+     * Draws the battlefield, and battlefield's pirate and castle and the weapon
+     * explosion
+     * 
+     * @param g2
+     *            Graphics2D
+     */
     @Override
     public void draw( Graphics2D g2 )
     {
@@ -224,6 +256,12 @@ public class BattleField extends Scenario
     }
 
 
+    /**
+     * Draw the remote bullet image
+     * 
+     * @param g2
+     *            Graphics 2D g2;
+     */
     private void drawRemoteBullet( Graphics2D g2 )
     {
         if ( remoteWeapon != null && remoteWeapon.isBulletActive() )
@@ -249,6 +287,15 @@ public class BattleField extends Scenario
     }
 
 
+    /**
+     * True if hit pirate false otherwise
+     * 
+     * @param x
+     *            coordinate
+     * @param y
+     *            coordinate
+     * @return boolean like above
+     */
     private boolean hitPirate( int x, int y )
     {
         int role = mController.getCurrentRole();
@@ -264,6 +311,9 @@ public class BattleField extends Scenario
     }
 
 
+    /**
+     * Returns weapon
+     */
     @Override
     public Weapon getCurrentWeapon()
     {
@@ -271,6 +321,12 @@ public class BattleField extends Scenario
     }
 
 
+    /**
+     * Draws the pirate image
+     * 
+     * @param g2
+     *            graphics
+     */
     private void drawPirate( Graphics2D g2 )
     {
         Weapon wp = weapon;
@@ -299,6 +355,12 @@ public class BattleField extends Scenario
     }
 
 
+    /**
+     * Draws the cannon that is on the castle
+     * 
+     * @param g2
+     *            graphics
+     */
     private void drawCannonOnCastle( Graphics2D g2 )
     {
         Weapon wp = weapon;
@@ -328,6 +390,12 @@ public class BattleField extends Scenario
     }
 
 
+    /**
+     * Draws the health bar
+     * 
+     * @param g2
+     *            graphics
+     */
     private void drawHealthBar( Graphics2D g2 )
     {
 
@@ -366,6 +434,11 @@ public class BattleField extends Scenario
     }
 
 
+    /**
+     * returns weapon for pirate
+     * 
+     * @return remoteWeapon or weapon
+     */
     private Weapon getPirate()
     {
         if ( remoteRole() == Constants.ROLE_PIRATE )
@@ -379,6 +452,11 @@ public class BattleField extends Scenario
     }
 
 
+    /**
+     * returns weapon for king
+     * 
+     * @return remoteWeapon or weapon
+     */
     private Weapon getKing()
     {
         if ( remoteRole() == Constants.ROLE_KING )
@@ -392,6 +470,9 @@ public class BattleField extends Scenario
     }
 
 
+    /**
+     * Handles the events of the keys
+     */
     @Override
     public void handleKeyEvents()
     {
@@ -419,6 +500,9 @@ public class BattleField extends Scenario
     }
 
 
+    /**
+     * Handles the mouse clicks
+     */
     @Override
     public void handleMouseClicked( MouseEvent e )
     {
@@ -439,12 +523,23 @@ public class BattleField extends Scenario
     }
 
 
+    /**
+     * Returns what the other role is
+     * 
+     * @return the remote role
+     */
     private int remoteRole()
     {
         return ( mController.getCurrentRole() + 1 ) % 2;
     }
 
 
+    /**
+     * handles mouse pressed
+     * 
+     * @param e
+     *            MouseEvent
+     */
     @Override
     public void handleMousePressed( MouseEvent e )
     {
@@ -452,6 +547,12 @@ public class BattleField extends Scenario
     }
 
 
+    /**
+     * handles mouse release
+     * 
+     * @param e
+     *            MouseEvent
+     */
     @Override
     public void handleMouseReleased( MouseEvent e )
     {
